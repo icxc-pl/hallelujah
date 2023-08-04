@@ -1,44 +1,48 @@
 <script lang="ts">
-import { defineComponent, h, type VNode } from 'vue';
-import { SongPresenter } from '@/songs/view/SongPresenter';
+import { defineComponent } from 'vue';
+import { Song } from '@/songs/model/Song';
+import SongVersesList from '@/songs/view/SongVersesList.vue';
 import { useSongsStore } from '@/stores/songs';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
-  setup() {
+  components: {
+    SongVersesList
+  },
+
+  data() {
+    return {
+      song: null as null | Song
+    }
+  },
+
+  created() {
     const { setCurrent, state } = useSongsStore();
     const route = useRoute()
     setCurrent(route.params['id'] as string);
-
-    return () => {
-      if (state.song == null) {
-        return [];
-      }
-
-      const children: VNode[] = [];
-      const songPresenter = new SongPresenter(state.song);
-
-      children.push(songPresenter.renderTitle());
-      children.push(...songPresenter.renderVerses());
-
-      return h('article', children);
-    };
+    this.song = state.song;
   }
+
 });
 </script>
 
-<style lang="less" scoped>
+<template>
+  <article v-if="song">
+    <h1>{{ song.title }}</h1>
+    <SongVersesList :verses="song.verses" />
+  </article>
+</template>
 
-article {
-  overflow: auto;
+<style lang="less">
+  article {
+    overflow: auto;
 
-  h1, p {
-    margin: var(--side-margin-h) var(--side-margin-v);
+    h1, p {
+      margin: var(--side-margin-h) var(--side-margin-v);
+    }
+
+    h1 {
+      line-height: 1em;
+    }
   }
-
-  h1 {
-    line-height: 1em;
-  }
-}
-
 </style>

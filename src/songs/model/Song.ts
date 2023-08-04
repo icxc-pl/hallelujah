@@ -1,10 +1,14 @@
 import { SongMeta } from './SongMeta';
 import { SongMetaType } from './SongMetaType';
 import { SongVerse } from './SongVerse';
+import { v4 as uuid } from 'uuid';
+import { normalizeText } from '@/common/helpers';
 
 export class Song {
+  uuid: string;
   id: number;
   title: string;
+  normalizedTitle: string;
   meta: SongMeta[];
   verses: SongVerse[];
 
@@ -14,8 +18,10 @@ export class Song {
     meta: SongMeta[],
     verses: SongVerse[]
   ) {
+    this.uuid = uuid();
     this.id = id;
     this.title = title;
+    this.normalizedTitle = normalizeText(title);
     this.meta = meta;
     this.verses = verses;
   }
