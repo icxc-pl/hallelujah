@@ -17,7 +17,7 @@ const songLink = computed((): string => {
     <ul>
       <MenuItem :link="songLink" text="Pieśń" icon="Note" />
       <MenuItem link="/list" text="Lista" icon="List" />
-      <MenuItem link="/settings" text="Ustawienia" icon="Tools" />
+      <MenuItem link="/options" text="Opcje" icon="DotsThreeHorizontal" />
     </ul>
   </nav>
 </template>

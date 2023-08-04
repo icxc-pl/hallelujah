@@ -36,13 +36,5 @@ export default defineComponent({
 <style lang="less">
   article {
     overflow: auto;
-
-    h1, p {
-      margin: var(--side-margin-h) var(--side-margin-v);
-    }
-
-    h1 {
-      line-height: 1em;
-    }
   }
 </style>

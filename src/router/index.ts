@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import SongView from '../views/SongView.vue';
 import SongsListView from '../views/SongsListView.vue';
-import SettingsView from '../views/SettingsView.vue';
+import OptionsView from '../views/OptionsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,9 +27,9 @@ const router = createRouter({
       component: SongsListView
     },
     {
-      path: '/settings',
-      name: 'settings',
-      component: SettingsView
+      path: '/options',
+      name: 'options',
+      component: OptionsView
     }
   ]
 });

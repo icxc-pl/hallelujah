@@ -19,5 +19,13 @@
   grid-template-areas: 'view' 'navigation';
 }
 
+h1, p {
+  margin: var(--side-margin-h) var(--side-margin-v);
+}
+
+h1 {
+  line-height: 1em;
+}
+
 @media (min-width: 1024px) {
 }
