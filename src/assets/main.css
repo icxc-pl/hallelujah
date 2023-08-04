@@ -1,0 +1,23 @@
+@import '../../node_modules/normalize.css/normalize.css';
+@import './vars.css';
+
+@import './body.css';
+@import './links.css';
+@import './aria.css';
+
+#app {
+  width: 100vw;
+  height: 100vh; /* fallback */
+  height: 100dvh;
+  margin: 0 auto;
+  font-weight: normal;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: calc(100vh - 4.5rem) 4.5rem; /* fallback */
+  grid-template-rows: calc(100dvh - 4.5rem) 4.5rem;
+  grid-template-areas: 'view' 'navigation';
+}
+
+@media (min-width: 1024px) {
+}

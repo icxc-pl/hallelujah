@@ -1,0 +1,52 @@
+:root {
+  --c-white: #ffffff;
+  --c-anti-flash-white: #f2f2f2;
+  --c-platinum: #e8e8e8;
+  --c-dark-platinum: #dedede;
+  --c-quick-silver: #a3a3a3;
+  --c-grey: #595959;
+  --c-charcoal: #383838;
+  --c-dark-charcoal: #303030;
+  --c-raisin-black: #242124;
+  --c-black: #000000;
+
+  --c-carmine: #952323;
+  --c-persian-red: #c62f2f;
+  --c-indian-red: #d85a5a;
+  --c-ultramarine: #0b0f99;
+  --c-palatinate-blue: #2d34f0;
+  --c-vista-blue: #8b9bf9;
+  --c-alice-blue: #daedff;
+
+  --side-margin-h: 1rem;
+  --side-margin-v: 1rem;
+}
+
+:root {
+  --color-background: var(--c-white);
+  --color-text: var(--c-raisin-black);
+  --color-inferior-text: var(--c-grey);
+
+  --color-link: var(--c-palatinate-blue);
+
+  --separator-color: var(--c-platinum);
+
+  --navigation-background: var(--c-platinum);
+  --navigation-background-shadow: var(--c-dark-platinum);
+  --navigation-button-text: var(--c-dark-charcoal);
+  --navigation-button-active-background: var(--color-background);
+  --navigation-button-active-text: var(--color-link);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--c-eerie-black);
+    --color-text: var(--c-anti-flash-white);
+
+    --color-link: var(--c-celestial-blue);
+
+    --navigation-background: var(--c-charcoal);
+    --navigation-background-shadow: var(--c-dark-charcoal);
+    --navigation-button-text: var(--c-quick-silver);
+  }
+}
