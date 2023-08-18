@@ -40,7 +40,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--c-eerie-black);
+    --color-background: var(--c-black);
     --color-text: var(--c-anti-flash-white);
 
     --color-link: var(--c-celestial-blue);

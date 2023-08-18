@@ -1,43 +1,36 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Song } from '../model/Song';
 import { SongMeta } from '../model/SongMeta';
 import { SongMetaType } from '../model/SongMetaType';
 
-export default defineComponent({
-  components: {
-    RouterLink
-  },
 
-  props: {
-    song: {
-      type: Song,
-      required: true
-    }
-  },
+const props = defineProps({
+  song: {
+    type: Song,
+    required: true
+  }
+});
 
-  computed: {
-    link(): string {
-      return '/song/' + this.song.id;
-    },
+const link = computed((): string => {
+  return '/song/' + props.song.id;
+});
 
-    metaList(): SongMeta[] {
-      const metaList: SongMeta[] = [];
-      
-      for (const meta of this.song.meta) {
-        if (meta.type == SongMetaType.AUTHOR) {
-          metaList.push(meta);
-        }
-      }
-
-      return metaList;
-    },
-
-    shouldRenderMeta(): boolean {
-      return this.metaList.length > 0;
+const metaList = computed((): SongMeta[] => {
+  const metaList: SongMeta[] = [];
+  
+  for (const meta of props.song.meta) {
+    if (meta.type == SongMetaType.AUTHOR) {
+      metaList.push(meta);
     }
   }
+
+  return metaList;
+});
+
+const shouldRenderMeta = computed((): boolean => {
+  return metaList.value.length > 0;
 });
 </script>
 

@@ -1,43 +1,32 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { Song } from '../model/Song';
 import SongsListElement from './SongsListElement.vue';
 import { normalizeText } from '@/common/helpers';
 
-
-export default defineComponent({
-  components: {
-    SongsListElement
+const props = defineProps({
+  songs: {
+    type: Array<Song>,
+    required: true
   },
 
-  props: {
-    songs: {
-      type: Array<Song>,
-      required: true
-    },
-
-    search: {
-      type: String,
-      default: ""
-    }
-  },
-
-  computed: {
-    normalizedSearch(): string {
-      return normalizeText(this.search);
-    }
-  },
-
-  methods: {
-    shouldShowSong(song: Song) {
-      if (this.search == "") {
-        return true;
-      }
-
-      return song.normalizedTitle.includes(this.normalizedSearch);
-    }
+  search: {
+    type: String,
+    default: ""
   }
 });
+
+const normalizedSearch = computed((): string => {
+  return normalizeText(props.search);
+});
+
+function shouldShowSong(song: Song) {
+  if (props.search == "") {
+    return true;
+  }
+
+  return song.normalizedTitle.includes(normalizedSearch.value);
+}
 </script>
 
 <template>

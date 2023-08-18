@@ -1,40 +1,47 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { Song } from '@/songs/model/Song';
+<script lang="ts" setup>
+import { useRoute } from 'vue-router';
 import SongVersesList from '@/songs/view/SongVersesList.vue';
 import { useSongsStore } from '@/stores/songs';
-import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
-export default defineComponent({
-  components: {
-    SongVersesList
-  },
+const store = useSongsStore();
+const { id, current } = storeToRefs(store);
 
-  data() {
-    return {
-      song: null as null | Song
-    }
-  },
+const route = useRoute();
 
-  created() {
-    const { setCurrent, state } = useSongsStore();
-    const route = useRoute()
-    setCurrent(route.params['id'] as string);
-    this.song = state.song;
+function getCurrentIdFromUrl() {
+  const pid = route.params['id'] as string;
+  const id = parseInt(pid);
+  if (isNaN(id)) {
+    return null;
   }
+  return id;
+}
 
-});
+const idFromUrl = getCurrentIdFromUrl();
+if (id.value != idFromUrl) {
+  id.value = idFromUrl;
+}
+
 </script>
 
 <template>
-  <article v-if="song">
-    <h1>{{ song.title }}</h1>
-    <SongVersesList :verses="song.verses" />
+  <article v-if="current">
+    <h1>{{ current.title }}</h1>
+    <SongVersesList :verses="current.verses" />
   </article>
 </template>
 
 <style lang="less">
   article {
     overflow: auto;
+
+    section {
+      margin: var(--side-margin-h) var(--side-margin-v);
+
+      p {
+        font-size: 110%;
+      }
+    }
   }
 </style>

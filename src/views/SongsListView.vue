@@ -1,40 +1,23 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { Song } from '@/songs/model/Song';
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
 import SearchBar from '@/components/SearchBar.vue';
 import SongsList from '@/songs/view/SongsList.vue';
 
-export default defineComponent({
-  components: {
-    SearchBar,
-    SongsList
-  },
+const store = useSongsStore();
+const { list } = storeToRefs(store);
+const search = ref("");
 
-  data() {
-    return {
-      songs: [] as Array<Song>,
-      search: ""
-    }
-  },
-
-  methods: {
-    setSearch(search: string) {
-      this.search = search;
-    }
-  },
-
-  created() {
-    const { songs } = useSongsStore();
-    this.songs = songs;
-  }
-});
+function setSearch(_search: string) {
+    search.value = _search;
+}
 </script>
 
 <template>
   <div>
     <SearchBar @input="setSearch" />
-    <SongsList :songs="songs" :search="search" />
+    <SongsList :songs="list" :search="search" />
   </div>
 </template>
 

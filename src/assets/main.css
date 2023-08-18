@@ -19,12 +19,25 @@
   grid-template-areas: 'view' 'navigation';
 }
 
-h1, p {
+h1 {
   margin: var(--side-margin-h) var(--side-margin-v);
 }
 
-h1 {
+h2 {
+  margin: calc(var(--side-margin-h) * 2) var(--side-margin-v) var(--side-margin-h);
+}
+
+h1, h2 {
   line-height: 1em;
+}
+
+select {
+  padding: 0.35rem;
+  border: 1px solid var(--c-dark-platinum);
+  background: var(--color-background);
+  width: 6rem;
+  border-radius: 3px;
+  flex-shrink: 0;
 }
 
 @media (min-width: 1024px) {

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import * as entypo from '@iconify-prerendered/vue-entypo';

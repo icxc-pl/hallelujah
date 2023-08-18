@@ -1,24 +1,18 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+// import { } from 'vue';
 import { SongVerse } from '../model/SongVerse';
 import SongVerseElement from './SongVerseElement.vue';
 
-export default defineComponent({
-  components: {
-    SongVerseElement
-  },
-
-  props: {
-    verses: {
-      type: Array<SongVerse>,
-      required: true
-    }
+defineProps({
+  verses: {
+    type: Array<SongVerse>,
+    required: true
   }
 });
 </script>
 
 <template>
-<SongVerseElement v-for="verse of verses"
-  :key="verse.uuid"
-  :verse="verse" />
+  <SongVerseElement v-for="verse of verses"
+    :key="verse.uuid"
+    :verse="verse" />
 </template>

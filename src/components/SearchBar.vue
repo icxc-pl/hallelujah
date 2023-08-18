@@ -1,42 +1,22 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { ref, watch } from 'vue';
 import { IconMagnifyingGlass } from '@iconify-prerendered/vue-entypo';
 import { filoTimeGate } from '@/common/time-gate/index';
 
-let gate: Function
 let lastPhrase = "";
+const phrase = ref("");
+const emit = defineEmits(["input"]);
 
-export default defineComponent({
-  components: {
-    IconMagnifyingGlass
-  },
+const gate = filoTimeGate(500, (phrase: string) => {
+  if (lastPhrase == phrase) {
+    return;
+  }
+  lastPhrase = phrase;
 
-  data() {
-    return {
-      phrase: "" as string
-    }
-  },
-
-  emits: ["input"],
-
-  watch: {
-    phrase: {
-      handler() {
-        gate(this.phrase);
-      }
-    }
-  },
-
-  created() {
-    gate = filoTimeGate(500, (phrase: string) => {
-      if (lastPhrase == phrase) {
-        return;
-      }
-      lastPhrase = phrase;
-
-      this.$emit("input", phrase);
-    });
-   }
+  emit("input", phrase);
+});
+watch(phrase, (phrase) => {
+  gate(phrase);
 });
 </script>
 

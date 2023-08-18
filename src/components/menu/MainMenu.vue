@@ -1,14 +1,17 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import MenuItem from './MenuItem.vue';
 import { useSongsStore } from '@/stores/songs';
 
-const { state } = useSongsStore();
+const songs = useSongsStore();
+const { id } = storeToRefs(songs);
+
 const songLink = computed((): string => {
-  if (state.id == null) {
+  if (id.value == null) {
     return '/';
   }
-  return '/song/' + state.id;
+  return '/song/' + id.value;
 });
 </script>
 

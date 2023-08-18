@@ -1,30 +1,18 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+// import { } from 'vue';
 import { SongVerse } from '../model/SongVerse';
 
-export default defineComponent({
-  props: {
-    verse: {
-      type: SongVerse,
-      required: true
-    }
-  },
-
-  computed: {
-    text() {
-      let text = "";
-      for (const line of this.verse.lines) {
-        if (text.length > 0) {
-          text += '<br>';
-        }
-        text += line.text;
-      }
-      return text;
-    }
+defineProps({
+  verse: {
+    type: SongVerse,
+    required: true
   }
 });
 </script>
 
 <template>
-  <p v-html="text"></p>
+  <section>
+    <p v-for="line in verse.lines"
+      :key="line.uuid">{{ line.text }}</p>
+  </section>
 </template>
