@@ -1,26 +1,36 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { storeToRefs } from "pinia";
 import { useOptionsStore } from '@/stores/options';
 
-const { functions } = useOptionsStore();
+const store = useOptionsStore();
+const options = storeToRefs(store);
+
+function b2s(val: boolean) {
+  return val ? "1" : "0";
+}
+
+function s2b(val: string) {
+  return val === "1";
+}
 
 const functionsShowChords = computed({
   get() {
-    return functions.showChords ? "1" : "0";
+    return b2s(options.showChords.value);
   },
 
   set(v: string) {
-    functions.showChords = v === "1";
+    options.showChords.value = s2b(v);
   }
 });
 
 const functionsShowLeaderTools = computed({
   get() {
-    return functions.showLeaderTools ? "1" : "0";
+    return b2s(options.showLeaderTools.value);
   },
 
   set(v: string) {
-    functions.showLeaderTools = v === "1";
+    options.showLeaderTools.value = s2b(v);
   }
 });
 </script>

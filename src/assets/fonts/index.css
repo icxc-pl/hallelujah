@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'fira_sans';
+  src: local('Fira Sans'),
+       local('FiraSans'),
+       local('Fira Sans Regular'),
+       local('FiraSans-Regular'),
+       url('firasans-regular.woff2') format('woff2'),
+       url('firasans-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-// import { } from 'vue';
+import { useOptionsStore } from '@/stores/options';
 import { SongVerse } from '../model/SongVerse';
+
+const options = useOptionsStore();
 
 defineProps({
   verse: {
@@ -11,8 +13,11 @@ defineProps({
 </script>
 
 <template>
-  <section>
-    <p v-for="line in verse.lines"
-      :key="line.uuid">{{ line.text }}</p>
-  </section>
+  <table>
+    <tr v-for="line in verse.lines"
+      :key="line.uuid">
+      <td>{{ line.text }}</td>
+      <td v-if="options.showChords">{{ line.chord }}</td>
+    </tr>
+  </table>
 </template>

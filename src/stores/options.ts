@@ -1,22 +1,14 @@
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
-
-export class OptionsFunctions {
-  showChords: boolean;
-  showLeaderTools: boolean;
-
-  constructor() {
-    this.showChords = false;
-    this.showLeaderTools = false;
-  }
-}
 
 export const useOptionsStore = defineStore('options', {
   state: () => {
-    const functions = reactive(new OptionsFunctions());
+    const showChords = ref(false);
+    const showLeaderTools = ref(false);
 
     return {
-      functions
+      showChords,
+      showLeaderTools
     };
   },
   

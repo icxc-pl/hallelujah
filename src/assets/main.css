@@ -1,6 +1,7 @@
 @import '../../node_modules/normalize.css/normalize.css';
 @import './vars.css';
 
+@import './fonts/index.css';
 @import './body.css';
 @import './links.css';
 @import './aria.css';

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { onActivated } from 'vue';
 import { useRoute } from 'vue-router';
 import SongVersesList from '@/songs/view/SongVersesList.vue';
 import { useSongsStore } from '@/stores/songs';
@@ -18,28 +19,35 @@ function getCurrentIdFromUrl() {
   return id;
 }
 
-const idFromUrl = getCurrentIdFromUrl();
-if (id.value != idFromUrl) {
-  id.value = idFromUrl;
-}
-
+onActivated(() => {
+  const idFromUrl = getCurrentIdFromUrl();
+  if (id.value != idFromUrl) {
+    id.value = idFromUrl;
+  }
+});
 </script>
 
 <template>
-  <article v-if="current">
-    <h1>{{ current.title }}</h1>
-    <SongVersesList :verses="current.verses" />
+  <article>
+    <template v-if="current">
+      <h1>{{ current.title }}</h1>
+      <SongVersesList :verses="current.verses" />
+    </template>
   </article>
+  <div>
+    Test
+  </div>
 </template>
 
 <style lang="less">
   article {
     overflow: auto;
 
-    section {
+    table {
+      width: calc(100% - 2 * var(--side-margin-v));
       margin: var(--side-margin-h) var(--side-margin-v);
 
-      p {
+      td {
         font-size: 110%;
       }
     }
