@@ -29,3 +29,5 @@ WORKDIR ${htmldir}
 USER nginx
 
 COPY --chown=nginx:nginx --from=builder /app/dist ./
+
+EXPOSE 8080
