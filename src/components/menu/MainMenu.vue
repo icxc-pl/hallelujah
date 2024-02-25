@@ -29,18 +29,11 @@ const songLink = computed((): string => {
 nav {
   grid-area: navigation;
   background: var(--navigation-background);
-  background: linear-gradient(
-    0deg,
-    var(--navigation-background) 92%,
-    var(--navigation-background-shadow) 100%
-  );
   position: relative;
 
   ul {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
+    display: flex nowrap;
+    flex-flow: column;
     list-style: none;
     padding: 0;
     margin: 0;

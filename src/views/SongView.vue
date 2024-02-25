@@ -34,9 +34,6 @@ onActivated(() => {
       <SongVersesList :verses="current.verses" />
     </template>
   </article>
-  <div>
-    Test
-  </div>
 </template>
 
 <style lang="less">

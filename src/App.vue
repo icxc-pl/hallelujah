@@ -4,6 +4,6 @@ import MainMenu from './components/menu/MainMenu.vue';
 </script>
 
 <template>
-  <CurrentView />
   <MainMenu />
+  <CurrentView />
 </template>

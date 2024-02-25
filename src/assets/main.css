@@ -7,17 +7,15 @@
 @import './aria.css';
 
 #app {
-  width: 100vw;
-  height: 100vh; /* fallback */
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   font-weight: normal;
 
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: calc(100vh - 4.5rem) 4.5rem; /* fallback */
-  grid-template-rows: calc(100dvh - 4.5rem) 4.5rem;
-  grid-template-areas: 'view' 'navigation';
+  grid-template-columns: 4rem calc(100% - 4rem);
+  grid-template-rows: 1fr;
+  grid-template-areas: 'navigation view';
 }
 
 h1 {

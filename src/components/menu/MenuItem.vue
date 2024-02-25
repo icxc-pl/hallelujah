@@ -32,9 +32,6 @@ const iconComponent = computed(() => entypo['Icon' + props.icon]);
 
 <style lang="less" scoped>
 li {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 6.5rem;
   text-align: center;
 
   a {
