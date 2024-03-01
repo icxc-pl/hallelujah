@@ -3,8 +3,9 @@ import { SongMetaType } from './SongMetaType';
 import { SongVerse } from './SongVerse';
 import { v4 as uuid } from 'uuid';
 import { normalizeText } from '@/common/helpers';
+import type { ISong } from './ISong';
 
-export class Song {
+export class Song implements ISong {
   uuid: string;
   id: number;
   title: string;

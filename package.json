@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "dexie": "^3.2.5",
     "fast-dice-coefficient": "file:../fast-dice-coefficient",
     "latinize": "^0.5.0",
     "normalize.css": "^8.0.1",

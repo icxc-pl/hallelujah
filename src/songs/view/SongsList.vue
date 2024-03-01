@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Song } from '../model/Song';
+import { type ISong } from '../model/ISong';
 import SongsListElement from './SongsListElement.vue';
 import { normalizeText } from '@/common/helpers';
 
 const props = defineProps({
   songs: {
-    type: Array<Song>,
+    type: Array<ISong>,
     required: true
   },
 
@@ -20,7 +20,7 @@ const normalizedSearch = computed((): string => {
   return normalizeText(props.search);
 });
 
-function shouldShowSong(song: Song) {
+function shouldShowSong(song: ISong) {
   if (props.search == "") {
     return true;
   }

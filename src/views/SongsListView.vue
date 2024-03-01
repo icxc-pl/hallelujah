@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useSongsStore } from '@/stores/songs';
+import { ref, reactive, shallowReactive } from 'vue';
 import SearchBar from '@/components/SearchBar.vue';
 import SongsList from '@/songs/view/SongsList.vue';
+import { getSongsList } from '@/client';
+import type { ISong } from '@/songs/model/ISong';
 
-const store = useSongsStore();
-const { list } = storeToRefs(store);
 const search = ref("");
+const list: Array<ISong> = shallowReactive([]);
 
 function setSearch(_search: string) {
     search.value = _search;
 }
+
+getSongsList().then((data: Array<ISong>) => {
+  list.push(...data);
+});
 </script>
 
 <template>

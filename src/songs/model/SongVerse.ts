@@ -1,7 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import { VerseLine } from '../model/VerseLine';
+import { VerseLine } from './VerseLine';
+import type { ISongVerse } from './ISongVerse';
 
-export class SongVerse {
+export class SongVerse implements ISongVerse {
   uuid: string;
   lines: VerseLine[];
 

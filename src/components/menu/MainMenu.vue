@@ -2,16 +2,16 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import MenuItem from './MenuItem.vue';
-import { useSongsStore } from '@/stores/songs';
+import { useStateStore } from '@/stores/state';
 
-const songs = useSongsStore();
-const { id } = storeToRefs(songs);
+const state = useStateStore();
+const { currentSongIndex } = storeToRefs(state);
 
 const songLink = computed((): string => {
-  if (id.value == null) {
+  if (currentSongIndex.value == null) {
     return '/';
   }
-  return '/song/' + id.value;
+  return '/song/' + currentSongIndex.value;
 });
 </script>
 

@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { useOptionsStore } from '@/stores/options';
-import { SongVerse } from '../model/SongVerse';
+import type { PropType } from 'vue';
+import type { ISongVerse } from '../model/ISongVerse';
 
 const options = useOptionsStore();
 
 defineProps({
   verse: {
-    type: SongVerse,
+    type: Object as PropType<ISongVerse>,
     required: true
   }
 });

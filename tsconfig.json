@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES2020",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitReturns": true

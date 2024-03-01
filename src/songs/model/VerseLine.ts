@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
+import type { IVerseLine } from './IVerseLine';
 
-export class VerseLine {
+export class VerseLine implements IVerseLine {
   uuid: string;
   text: string;
   chord: string;

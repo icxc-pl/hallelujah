@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 // import { } from 'vue';
-import { SongVerse } from '../model/SongVerse';
+import type { ISongVerse } from '../model/ISongVerse';
 import SongVerseElement from './SongVerseElement.vue';
 
 defineProps({
   verses: {
-    type: Array<SongVerse>,
+    type: Array<ISongVerse>,
     required: true
   }
 });

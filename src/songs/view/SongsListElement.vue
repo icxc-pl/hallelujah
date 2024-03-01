@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
-import { Song } from '../model/Song';
+import { type ISong } from '../model/ISong';
 import { SongMeta } from '../model/SongMeta';
 import { SongMetaType } from '../model/SongMetaType';
 
 
 const props = defineProps({
   song: {
-    type: Song,
+    type: Object as PropType<ISong>,
     required: true
   }
 });
