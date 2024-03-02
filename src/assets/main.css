@@ -5,6 +5,7 @@
 @import './body.css';
 @import './links.css';
 @import './aria.css';
+@import './animations.css';
 
 #app {
   width: 100%;
@@ -14,8 +15,9 @@
 
   display: grid;
   grid-template-columns: 4rem calc(100% - 4rem);
-  grid-template-rows: 1fr;
-  grid-template-areas: 'navigation view';
+  grid-template-rows: 3rem 1fr;
+  grid-template-areas: 'navigation toolbar'
+    'navigation view';
 }
 
 h1 {

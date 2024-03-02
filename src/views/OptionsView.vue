@@ -3,6 +3,8 @@ import { computed } from 'vue';
 import { storeToRefs } from "pinia";
 import { useOptionsStore } from '@/stores/options';
 
+import ViewLayout from '@/components/ViewLayout.vue';
+
 const store = useOptionsStore();
 const options = storeToRefs(store);
 
@@ -36,28 +38,30 @@ const functionsShowLeaderTools = computed({
 </script>
 
 <template>
-  <div>
-    <h1>Opcje</h1>
+  <ViewLayout>
+    <template #content>
+      <h1>Opcje</h1>
 
-    <h2>Funkcje</h2>
-    <ul>
-      <li>
-        <label for="function-show-chords">Akordy</label>
-        <select id="function-show-chords" v-model="functionsShowChords">
-          <option value="0">Ukryj</option>
-          <option value="1">Pokaż</option>
-        </select>
-      </li>
-      <li>
-        <label for="function-show-leader-tools">Narzędzia prowadzącego</label>
-        <select id="function-show-leader-tools" v-model="functionsShowLeaderTools">
-          <option value="0">Ukryj</option>
-          <option value="1">Pokaż</option>
-        </select>
-      </li>
-    </ul>
+      <h2>Funkcje</h2>
+      <ul>
+        <li>
+          <label for="function-show-chords">Akordy</label>
+          <select id="function-show-chords" v-model="functionsShowChords">
+            <option value="0">Ukryj</option>
+            <option value="1">Pokaż</option>
+          </select>
+        </li>
+        <li>
+          <label for="function-show-leader-tools">Narzędzia prowadzącego</label>
+          <select id="function-show-leader-tools" v-model="functionsShowLeaderTools">
+            <option value="0">Ukryj</option>
+            <option value="1">Pokaż</option>
+          </select>
+        </li>
+      </ul>
 
-  </div>
+    </template>
+  </ViewLayout>
 </template>
 
 <style scoped lang="less">

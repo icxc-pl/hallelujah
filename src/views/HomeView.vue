@@ -1,7 +1,11 @@
+<script lang="ts" setup>
+import ViewLayout from '@/components/ViewLayout.vue';
+</script>
+
 <template>
-  <div>
+  <ViewLayout>
     
-  </div>
+  </ViewLayout>
 </template>
 
 <style scoped>

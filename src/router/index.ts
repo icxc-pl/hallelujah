@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import SongView from '../views/SongView.vue';
 import SongsListView from '../views/SongsListView.vue';
+import PlaylistsView from '../views/PlaylistsView.vue';
 import OptionsView from '../views/OptionsView.vue';
 
 const router = createRouter({
@@ -16,15 +17,16 @@ const router = createRouter({
       path: '/song/:id',
       name: 'song',
       component: SongView
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/list',
-      name: 'songs-list',
+      path: '/songs',
+      name: 'songs',
       component: SongsListView
+    },
+    {
+      path: '/playlists',
+      name: 'playlists',
+      component: PlaylistsView
     },
     {
       path: '/options',

@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { shallowReactive } from 'vue';
 // import SearchBar from '@/components/SearchBar.vue';
-import SongsList from '@/lib/songs/view/SongsList.vue';
-import { getSongsList } from '@/lib/client';
-import type { ISong } from '@/lib/songs/model/ISong';
+import PlaylistsList from '@/lib/playlists/view/PlaylistsList.vue';
+import { getPlaylistsList } from '@/lib/client';
+import type { IPlaylist } from '@/lib/songs/model/IPlaylist';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
 
 const container: DataContainer = shallowReactive(new DataContainer());
 
-getSongsList().then((data: Array<ISong>) => {
+getPlaylistsList().then((data: Array<IPlaylist>) => {
   container.setData(data);
 });
 </script>
@@ -19,9 +19,9 @@ getSongsList().then((data: Array<ISong>) => {
   <ViewLayout :loading-enabled="true" :loading-state="container.loading">
 
     <template #content>
-        <!-- <SearchBar @input="setSearch" /> -->
-        <SongsList
-          :songs="(container.data as Array<ISong>)" />
+      <!-- <SearchBar @input="setSearch" /> -->
+      <PlaylistsList v-if="!container.loading"
+        :playlists="(container.data as Array<IPlaylist>)" />
     </template>
 
   </ViewLayout>

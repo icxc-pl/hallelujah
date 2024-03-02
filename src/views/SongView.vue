@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import { onActivated, shallowReactive } from 'vue';
 import { useRoute } from 'vue-router';
-import SongVersesList from '@/songs/view/SongVersesList.vue';
+import SongVersesList from '@/lib/songs/view/SongVersesList.vue';
 import { useStateStore } from '@/stores/state';
 import { storeToRefs } from 'pinia';
-import { getSong } from '@/client';
-import type { ISong } from '@/songs/model/ISong';
+import { getSong } from '@/lib/client';
+import type { ISong } from '@/lib/songs/model/ISong';
+import { DataContainer } from '@/lib/vue/DataContainer';
+
+import ViewLayout from '@/components/ViewLayout.vue';
 
 const state = useStateStore();
 const { currentSongIndex } = storeToRefs(state);
 
-const current = shallowReactive({
-  id: null as number | null,
-  song: null as ISong | null, 
-});
+const container: DataContainer = shallowReactive(new DataContainer());
 
 const route = useRoute();
 
@@ -34,21 +34,25 @@ onActivated(() => {
   }
 
   getSong(idFromUrl).then((data) => {
-    current.song = data;
+    container.setData(data);
   });
 
-  // if (currentSongIndex.value != idFromUrl) {
-  //   currentSongIndex.value = idFromUrl;
-  // }
+  if (currentSongIndex.value != idFromUrl) {
+    currentSongIndex.value = idFromUrl;
+  }
 });
 </script>
 
 <template>
-  <article>
-    <h1>{{ current.song ? current.song.title : "Ładuję..." }}</h1>
-    <SongVersesList v-if="current.song"
-      :verses="current.song.verses" />
-  </article>
+  <ViewLayout :loading-enabled="true" :loading-state="container.loading">
+
+    <template #content>
+      <h1>{{ (container.data as ISong).title }}</h1>
+      <SongVersesList
+        :verses="(container.data as ISong).verses" />
+    </template>
+
+  </ViewLayout>
 </template>
 
 <style lang="less">

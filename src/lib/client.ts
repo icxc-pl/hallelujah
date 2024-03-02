@@ -1,11 +1,12 @@
-import {
-  ClientRequest,
-  ClientRequestListSongs,
-  ClientRequestSearchSongs,
-  ClientRequestGetSong
- } from "@/common/ClientRequest";
-import type { WorkerResponse } from "@/common/WorkerResponse";
-import type { ISong } from "@/songs/model/ISong";
+import { ClientRequest } from "./requests/ClientRequest";
+
+import type { ISong } from "./songs/model/ISong";
+import { ClientRequestListSongs, ClientRequestSearchSongs, ClientRequestGetSong } from "./songs/requests";
+
+import type { IPlaylist } from "./playlists/model/IPlaylist";
+import { ClientRequestListPlaylists, ClientRequestGetPlaylist } from "./playlists/requests";
+
+import type { WorkerResponse } from "./responses/WorkerResponse";
 
 /**
  * Map of requests to resolve promises
@@ -18,6 +19,8 @@ const requests = new Map<string, Function>();
 const worker = new Worker(new URL('../worker', import.meta.url), {
   type: 'module'
 });
+
+console.log(worker);
 
 /**
  * Handle worker response
@@ -61,10 +64,36 @@ export function getSongsList(): Promise<Array<ISong>> {
 }
 
 /**
+ * Search songs
+ * @returns Promise<Array<ISong>>
+ */
+export function searchSongs(query: string): Promise<Array<ISong>> {
+  return post(new ClientRequestSearchSongs(query)) as Promise<Array<ISong>>;
+}
+
+/**
  * Get song
  * @param id number
  * @returns Promise<ISong>
  */
 export function getSong(id: number): Promise<ISong> {
   return post(new ClientRequestGetSong(id)) as Promise<ISong>;
+}
+
+
+/**
+ * Get songs list
+ * @returns Promise<Array<IPlaylist>>
+ */
+export function getPlaylistsList(): Promise<Array<IPlaylist>> {
+  return post(new ClientRequestListPlaylists()) as Promise<Array<IPlaylist>>;
+}
+
+/**
+ * Get song
+ * @param id number
+ * @returns Promise<ISong>
+ */
+export function getPlaylist(id: number): Promise<IPlaylist> {
+  return post(new ClientRequestGetPlaylist(id)) as Promise<IPlaylist>;
 }
