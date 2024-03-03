@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
+
 const props = defineProps({
   title: {
     type: String,
@@ -50,13 +51,17 @@ const contentClass = computed((): string[] => {
   display: flex;
   justify-content: flex-end;
 
-  h1 {
-    width: auto;
-    width: 100%;
+  & > * {
+    flex-shrink: 0;
+  }
+
+  & > h1 {
     font-size: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-basis: 100%;
+    flex-shrink: 1;
   }
 }
 
