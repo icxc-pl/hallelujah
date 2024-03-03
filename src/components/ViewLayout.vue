@@ -2,6 +2,10 @@
 import { computed } from 'vue';
 
 const props = defineProps({
+  title: {
+    type: String,
+    default: ""
+  },
   loadingEnabled: {
     type: Boolean,
     default: false
@@ -12,8 +16,16 @@ const props = defineProps({
   }
 });
 
+const shouldShow = computed((): boolean => {
+  return !props.loadingEnabled || !props.loadingState;
+});
+
+const viewTitle = computed((): string => {
+  return shouldShow.value ? props.title : "Ładowanie...";
+});
+
 const contentClass = computed((): string[] => {
-  const classes = ['content'];
+  const classes = [];
   if (props.loadingEnabled && props.loadingState) {
     classes.push('content-loading');
   }
@@ -23,27 +35,35 @@ const contentClass = computed((): string[] => {
 </script>
 
 <template>
-  <div class="toolbar">
-    <slot name="toolbar"></slot>
+  <div id="toolbar">
+    <h1>{{ viewTitle }}</h1>
+    <slot v-if="shouldShow" name="toolbar"></slot>
   </div>
-  <div :class="contentClass">
-    <template v-if="loadingEnabled">
-      <slot v-if="!loadingState" name="content"></slot>
-    </template>
-    <template v-else>
-      <slot name="content"></slot>
-    </template>
+  <div id="content" :class="contentClass">
+    <slot v-if="shouldShow" name="content"></slot>
   </div>
 </template>
 
 <style lang="less">
-.toolbar {
+#toolbar {
+  background: #f7f7f7;
   display: flex;
+  justify-content: flex-end;
+
+  h1 {
+    width: auto;
+    width: 100%;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
-.content {
+#content {
+  overflow: auto;
 
-  &-loading {
+  &.is-loading {
     height: 100%;
     position: relative;
 
@@ -59,6 +79,6 @@ const contentClass = computed((): string[] => {
       animation: spinner 3s infinite;
     }
   }
-
 }
+
 </style>

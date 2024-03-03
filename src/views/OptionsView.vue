@@ -38,10 +38,8 @@ const functionsShowLeaderTools = computed({
 </script>
 
 <template>
-  <ViewLayout>
+  <ViewLayout title="Opcje">
     <template #content>
-      <h1>Opcje</h1>
-
       <h2>Funkcje</h2>
       <ul>
         <li>

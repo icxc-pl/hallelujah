@@ -20,8 +20,6 @@ const worker = new Worker(new URL('../worker', import.meta.url), {
   type: 'module'
 });
 
-console.log(worker);
-
 /**
  * Handle worker response
  * @param event MessageEvent

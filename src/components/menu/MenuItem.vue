@@ -30,9 +30,11 @@ const iconComponent = computed(() => entypo['Icon' + props.icon]);
   </li>
 </template>
 
-<style lang="less" scoped>
-li {
+<style lang="less">
+#main-menu > ul > li {
   text-align: center;
+  flex-grow: 0;
+  overflow: hidden;
 
   a {
     display: block;
@@ -62,5 +64,24 @@ li {
       width: 100%;
     }
   }
+
 }
+
+@media screen and (orientation: landscape) {
+  #main-menu > ul > li {
+    height: 5rem;
+
+    a {
+      padding-top: 0.25rem;
+    }
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #main-menu > ul > li {
+    flex-basis: 6rem;
+    flex-shrink: 1;
+  }
+}
+
 </style>

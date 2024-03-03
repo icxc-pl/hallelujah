@@ -14,7 +14,7 @@ defineProps({
 </script>
 
 <template>
-  <table>
+  <table class="song-verse">
     <tr v-for="line in verse.lines"
       :key="line.uuid">
       <td>{{ line.text }}</td>
@@ -22,3 +22,14 @@ defineProps({
     </tr>
   </table>
 </template>
+
+<style lang="less">
+.song-verse {
+  width: calc(100% - 2 * var(--side-margin-v));
+  margin: var(--side-margin-h) var(--side-margin-v);
+
+  td {
+    font-size: 110%;
+  }
+}
+</style>

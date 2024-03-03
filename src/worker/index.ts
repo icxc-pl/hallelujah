@@ -30,7 +30,7 @@ db.open();
 
 
 self.onmessage = (event: MessageEvent) => {
-  console.log("[Worker] otrzymałem wiadomość", event.data);
+  // console.log("[Worker] otrzymałem wiadomość", event.data);
   const request: ClientRequest = event.data;
   
   switch (request.command) {

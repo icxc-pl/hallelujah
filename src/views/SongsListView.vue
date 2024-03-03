@@ -16,7 +16,9 @@ getSongsList().then((data: Array<ISong>) => {
 </script>
 
 <template>
-  <ViewLayout :loading-enabled="true" :loading-state="container.loading">
+  <ViewLayout title="Przeglądaj"
+    :loading-enabled="true"
+    :loading-state="container.loading">
 
     <template #content>
         <!-- <SearchBar @input="setSearch" /> -->

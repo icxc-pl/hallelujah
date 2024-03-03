@@ -14,11 +14,29 @@
   font-weight: normal;
 
   display: grid;
-  grid-template-columns: 4rem calc(100% - 4rem);
-  grid-template-rows: 3rem 1fr;
-  grid-template-areas: 'navigation toolbar'
-    'navigation view';
 }
+
+@media screen and (orientation: landscape) {
+  #app {
+    grid-template-columns: 5.5rem 1fr;
+    grid-template-rows: 3rem 1fr;
+    grid-template-areas:
+      'navigation toolbar'
+      'navigation view';
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #app {
+    grid-template-columns: 100%;
+    grid-template-rows: 3rem 1fr 4.5rem;
+    grid-template-areas:
+      'toolbar'
+      'view'
+      'navigation';
+  }
+}
+
 
 h1 {
   margin: var(--side-margin-h) var(--side-margin-v);
@@ -32,6 +50,12 @@ h1, h2 {
   line-height: 1em;
 }
 
+p {
+  margin: var(--side-margin-h) var(--side-margin-v);
+  font-size: 1.25rem;
+  line-height: 150%;
+}
+
 select {
   padding: 0.35rem;
   border: 1px solid var(--c-dark-platinum);
@@ -39,7 +63,4 @@ select {
   width: 6rem;
   border-radius: 3px;
   flex-shrink: 0;
-}
-
-@media (min-width: 1024px) {
 }

@@ -16,7 +16,7 @@ const songLink = computed((): string => {
 </script>
 
 <template>
-  <nav>
+  <nav id="main-menu">
     <ul>
       <MenuItem :link="songLink" text="Pieśń" icon="Note" />
       <MenuItem link="/songs" text="Przeglądaj" icon="List" />
@@ -26,20 +26,34 @@ const songLink = computed((): string => {
   </nav>
 </template>
 
-<style lang="less" scoped>
-nav {
+<style lang="less">
+#main-menu {
   grid-area: navigation;
   background: var(--navigation-background);
   position: relative;
+  font-size: 0.9rem;
 
-  ul {
-    display: flex nowrap;
-    flex-flow: column;
+  & > ul {
+    display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
     height: 100%;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  #main-menu > ul {
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #main-menu > ul {
+    flex-flow: row nowrap;
+    justify-content: center;
   }
 }
 </style>

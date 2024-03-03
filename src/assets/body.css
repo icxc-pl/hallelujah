@@ -14,7 +14,6 @@ body {
   transition: color 0.1s, background-color 0.1s;
   line-height: 1.6;
   font-family: 'fira_sans', sans-serif;
-  font-size: 0.875rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

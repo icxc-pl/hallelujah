@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onActivated, shallowReactive } from 'vue';
+import { computed, onActivated, shallowReactive } from 'vue';
 import { useRoute } from 'vue-router';
 import SongVersesList from '@/lib/songs/view/SongVersesList.vue';
 import { useStateStore } from '@/stores/state';
@@ -41,13 +41,17 @@ onActivated(() => {
     currentSongIndex.value = idFromUrl;
   }
 });
+
+const songTitle = computed((): string => {
+  return container.loading ? "" : (container.data as ISong).title;
+});
 </script>
 
 <template>
-  <ViewLayout :loading-enabled="true" :loading-state="container.loading">
-
+  <ViewLayout :title="songTitle"
+    :loading-enabled="true"
+    :loading-state="container.loading">
     <template #content>
-      <h1>{{ (container.data as ISong).title }}</h1>
       <SongVersesList
         :verses="(container.data as ISong).verses" />
     </template>
@@ -56,16 +60,5 @@ onActivated(() => {
 </template>
 
 <style lang="less">
-  article {
-    overflow: auto;
 
-    table {
-      width: calc(100% - 2 * var(--side-margin-v));
-      margin: var(--side-margin-h) var(--side-margin-v);
-
-      td {
-        font-size: 110%;
-      }
-    }
-  }
 </style>
