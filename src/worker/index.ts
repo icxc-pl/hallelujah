@@ -20,7 +20,7 @@ db.on('ready', (db) => {
         const importer = new SongImporter();
         importer.process(songsFile);
       
-        return (<SongsDB>db).songs.bulkAdd(importer.songs);
+        return (<DataBase>db).songs.bulkAdd(importer.songs);
       });
     }
   });
@@ -58,5 +58,13 @@ self.onmessage = (event: MessageEvent) => {
       return db.playlists.toArray().then((playlists) => {
         self.postMessage(new WorkerResponse(request.uuid, playlists));
       });
+
+    case ClientRequestCommand.CREATE_PLAYLIST:
+      return db.playlists.add(request.args).then((id) => {
+        self.postMessage(new WorkerResponse(request.uuid, id));
+      });
+
+    default:
+      self.postMessage(new WorkerResponse(request.uuid, 'ERR! Unknown command'));
   }
 };

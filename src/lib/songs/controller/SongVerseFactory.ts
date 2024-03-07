@@ -1,11 +1,12 @@
 import { VerseLineFactory } from './VerseLineFactory';
-import { VerseLine } from '../model/VerseLine';
-import { SongVerse } from '../model/SongVerse';
+import { type ISongVerse, SongVerse, VerseLine } from '../model';
 
-export class SongVerseFactory implements SongVerse {
+export class SongVerseFactory implements ISongVerse {
+  uuid: string;
   lines: VerseLine[];
 
   constructor() {
+    this.uuid = "";
     this.lines = [];
   }
 

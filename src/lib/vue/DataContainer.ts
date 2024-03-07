@@ -9,4 +9,8 @@ export class DataContainer {
     this.loading = false;
   }
 
+  public setLoading(loading: boolean) {
+    this.loading = loading;
+  }
+
 }

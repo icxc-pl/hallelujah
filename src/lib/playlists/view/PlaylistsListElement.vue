@@ -12,7 +12,7 @@ const props = defineProps({
 });
 
 const link = computed((): string => {
-  return '/playlist/' + props.playlist.id;
+  return '/playlist/' + props.playlist.uuid;
 });
 
 </script>

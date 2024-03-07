@@ -1,28 +1,30 @@
 import { HASH, SPACE, GT } from '@/common/constants';
 import { SongMetaFactory } from './SongMetaFactory';
 import { SongVerseFactory } from './SongVerseFactory';
-import { Song } from '../model/Song';
-import { SongMeta } from '../model/SongMeta';
-import { SongVerse } from '../model/SongVerse';
+import { type ISong, Song, SongMeta, SongVerse } from '../model';
 
 const BEGINING: string = HASH + HASH + SPACE;
 let COUNTER: number = 0;
 
-export class SongFactory implements Song {
+export class SongFactory implements ISong {
   static isBegining(line: string): boolean {
     return line.startsWith(BEGINING);
   }
 
-  id: number;
+  uuid: string;
+  id: number | null;
   title: string;
+  normalizedTitle: string;
   meta: SongMeta[];
   verses: SongVerse[];
 
   currentVerse: SongVerseFactory | null;
 
   constructor(title: string) {
+    this.uuid = "";
     this.id = ++COUNTER;
     this.title = title.substring(BEGINING.length);
+    this.normalizedTitle = "";
     this.meta = [];
     this.verses = [];
 
@@ -53,6 +55,6 @@ export class SongFactory implements Song {
   }
 
   get(): Song {
-    return new Song(this.id, this.title, this.meta, this.verses);
+    return new Song(this.title, this.meta, this.verses);
   }
 }

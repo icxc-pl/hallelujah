@@ -2,8 +2,8 @@
 import { computed, shallowReactive } from 'vue';
 // import SearchBar from '@/components/SearchBar.vue';
 import PlaylistsList from '@/lib/playlists/view/PlaylistsList.vue';
-import { getPlaylistsList } from '@/lib/client';
-import type { IPlaylist } from '@/lib/playlists/model/IPlaylist';
+import { getPlaylistsList, createPlaylist } from '@/lib/client';
+import { type IPlaylist, Playlist } from '@/lib/playlists/model';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
@@ -15,14 +15,36 @@ const areItems = computed(() => {
   return container.data instanceof Array && container.data.length > 0;
 });
 
-getPlaylistsList().then((data: Array<IPlaylist>) => {
-  container.setData(data);
-});
+function refresh() {
+  container.setLoading(true);
+  getPlaylistsList().then((data: Array<IPlaylist>) => {
+    container.setData(data);
+  });
+}
 
 function addPlaylist() {
-  const title = prompt("Podaj nazwę nowej Playlisty:");
-  console.log(title);
+  let title = prompt("Podaj nazwę nowej Playlisty:");
+  
+  if (title == null) {
+    return;
+  }
+
+  let playlist: IPlaylist;
+  try {
+    playlist = new Playlist(title);
+  } catch (e: any) {
+    alert("Wystąpił błąd podczas tworzenia Playlisty: " + e.message);
+    return;
+  }
+
+  createPlaylist(playlist).then((data: IPlaylist) => {
+    refresh();
+  });
+
 }
+
+
+refresh();
 
 </script>
 

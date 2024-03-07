@@ -1,9 +1,5 @@
-import { SongMeta } from '../model/SongMeta';
-import { SongMetaUrl } from '../model/SongMetaUrl';
-import {
-  SongMetaType,
-  findEnum as findMetaTypeEnum
-} from '../model/SongMetaType';
+import { SongMeta, SongMetaUrl, SongMetaType } from '../model';
+import { findEnum as findMetaTypeEnum } from '../model/SongMetaType';
 import { findEnum as findMetaUrlTypeEnum } from '../model/SongMetaUrlType';
 
 const REGEXP: RegExp =

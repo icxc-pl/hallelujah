@@ -11,7 +11,7 @@ export class DataBase extends Dexie {
     super("DataBase");
     this.version(1).stores({
       songs: "++id, uuid, title, normalizedTitle, meta, verses",
-      playlists: "++id, uuid, title, songsIds"
+      playlists: "++id, uuid, title, color, songsIds"
     });
     this.songs = this.table("songs");
     this.playlists = this.table("playlists");

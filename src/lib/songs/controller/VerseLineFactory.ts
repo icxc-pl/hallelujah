@@ -1,4 +1,4 @@
-import { VerseLine } from '../model/VerseLine';
+import { VerseLine } from '../model';
 
 const SEPARATOR: string = ' | ';
 

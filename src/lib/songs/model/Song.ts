@@ -6,21 +6,19 @@ import { normalizeText } from '@/common/helpers';
 import type { ISong } from './ISong';
 
 export class Song implements ISong {
+  id?: number;
   uuid: string;
-  id: number;
   title: string;
   normalizedTitle: string;
   meta: SongMeta[];
   verses: SongVerse[];
 
   constructor(
-    id: number,
     title: string,
     meta: SongMeta[],
     verses: SongVerse[]
   ) {
     this.uuid = uuid();
-    this.id = id;
     this.title = title;
     this.normalizedTitle = normalizeText(title);
     this.meta = meta;

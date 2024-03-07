@@ -4,14 +4,14 @@ import type { ISong } from "./songs/model/ISong";
 import { ClientRequestListSongs, ClientRequestSearchSongs, ClientRequestGetSong } from "./songs/requests";
 
 import type { IPlaylist } from "./playlists/model/IPlaylist";
-import { ClientRequestListPlaylists, ClientRequestGetPlaylist } from "./playlists/requests";
+import { ClientRequestListPlaylists, ClientRequestGetPlaylist, ClientRequestCreatePlaylist } from "./playlists/requests";
 
 import type { WorkerResponse } from "./responses/WorkerResponse";
 
 /**
  * Map of requests to resolve promises
  */
-const requests = new Map<string, Function>();
+const requests = new Map<string, [Function, Function]>();
 
 /**
  * Main worker to handle requests
@@ -32,9 +32,13 @@ worker.onmessage = (event) => {
   }
 
   if (requests.has(response.uuid)) {
-    const resolve = requests.get(response.uuid);
-    if (resolve) {
-      resolve(response.data);
+    const r = requests.get(response.uuid);
+    if (r) {
+      if (typeof response.data === "string" && response.data.startsWith("ERR!")) {
+        r[1](response.data.substring(5));
+      } else {
+        r[0](response.data);
+      }
     }
     requests.delete(response.uuid);
   }
@@ -46,8 +50,8 @@ worker.onmessage = (event) => {
  * @returns Promise<Object>
  */
 function post(request: ClientRequest): Promise<Object> {
-  const promise = new Promise<Object>((resolve) => {
-    requests.set(request.uuid, resolve);
+  const promise = new Promise<Object>((resolve, reject) => {
+    requests.set(request.uuid, [resolve, reject]);
   });
   worker.postMessage(request);
   return promise;
@@ -94,4 +98,13 @@ export function getPlaylistsList(): Promise<Array<IPlaylist>> {
  */
 export function getPlaylist(id: number): Promise<IPlaylist> {
   return post(new ClientRequestGetPlaylist(id)) as Promise<IPlaylist>;
+}
+
+/**
+ * Create playlist
+ * @param playlist IPlaylist
+ * @returns Promise<IPlaylist>
+ */
+export function createPlaylist(playlist: IPlaylist): Promise<IPlaylist> {
+  return post(new ClientRequestCreatePlaylist(playlist)) as Promise<IPlaylist>;
 }
