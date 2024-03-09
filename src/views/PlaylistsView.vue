@@ -1,15 +1,27 @@
 <script lang="ts" setup>
-import { computed, shallowReactive } from 'vue';
+import { computed, reactive } from 'vue';
+import { useModal } from 'vue-final-modal';
 // import SearchBar from '@/components/SearchBar.vue';
 import PlaylistsList from '@/lib/playlists/view/PlaylistsList.vue';
-import { getPlaylistsList, createPlaylist } from '@/lib/client';
-import { type IPlaylist, Playlist } from '@/lib/playlists/model';
+import { getPlaylistsList } from '@/lib/client';
+import { type IPlaylist } from '@/lib/playlists/model';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
 import ToolbarButton from '@/components/toolbar/ToolbarButton.vue';
+import CreatePlaylistModal from '@/lib/playlists/view/CreatePlaylistModal.vue';
 
-const container: DataContainer = shallowReactive(new DataContainer());
+
+const createPlaylistModal = useModal({
+  component: CreatePlaylistModal,
+  attrs: {
+    onCreated: () => {
+      refresh();
+    }
+  }
+});
+
+const container: DataContainer = reactive(new DataContainer());
 
 const areItems = computed(() => {
   return container.data instanceof Array && container.data.length > 0;
@@ -22,27 +34,12 @@ function refresh() {
   });
 }
 
-function addPlaylist() {
-  let title = prompt("Podaj nazwę nowej Playlisty:");
-  
-  if (title == null) {
-    return;
+function whenPlaylistDeleted(playlist: IPlaylist) {
+  const idx = (container.data as IPlaylist[]).indexOf(playlist);
+  if (idx >= 0) {
+    (container.data as IPlaylist[]).splice(idx, 1);
   }
-
-  let playlist: IPlaylist;
-  try {
-    playlist = new Playlist(title);
-  } catch (e: any) {
-    alert("Wystąpił błąd podczas tworzenia Playlisty: " + e.message);
-    return;
-  }
-
-  createPlaylist(playlist).then((data: IPlaylist) => {
-    refresh();
-  });
-
 }
-
 
 refresh();
 
@@ -54,14 +51,15 @@ refresh();
     :loading-state="container.loading">
 
     <template #toolbar>
-      <ToolbarButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="addPlaylist" />
+      <ToolbarButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="createPlaylistModal.open" />
     </template>
 
     <template #content>
       <!-- <SearchBar @input="setSearch" /> -->
       <template v-if="!container.loading">
         <PlaylistsList v-if="areItems"
-          :playlists="(container.data as Array<IPlaylist>)" />
+          :playlists="(container.data as Array<IPlaylist>)"
+          @itemdeleted="whenPlaylistDeleted"  />
         
         <p v-else>
           Nie masz jeszcze żadnej Playlisty. Kliknij na plusik do góry, aby dodać nową.

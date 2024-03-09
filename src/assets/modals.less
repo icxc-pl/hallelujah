@@ -1,0 +1,44 @@
+@import '../../node_modules/vue-final-modal/dist/style.css';
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-backdrop {
+    background-color: rgba(0, 0, 0, 0.065);
+    backdrop-filter: blur(2px);
+  }
+
+  &-window {
+    background: white;
+    border-radius: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 100%;
+    max-width: 36rem;
+    border: 1px solid rgba(0, 0, 0, 0.085);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 'header' 'content' 'footer';
+  }
+
+  &-header {
+    grid-area: header;
+    padding: 1rem;
+  }
+
+  &-content {
+    grid-area: content;
+    padding: 1rem;
+  }
+
+  &-footer {
+    grid-area: footer;
+    padding: 1rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.085);
+    display: flex;
+    justify-content: flex-start;
+  }
+
+}

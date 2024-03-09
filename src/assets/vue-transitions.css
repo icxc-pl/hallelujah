@@ -1,0 +1,7 @@
+.modal-window-enter-active {
+  animation: fuse 0.3s;
+}
+
+.modal-window-leave-active {
+  animation: fuse 0.3s reverse;
+}

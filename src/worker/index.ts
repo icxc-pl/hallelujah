@@ -64,6 +64,11 @@ self.onmessage = (event: MessageEvent) => {
         self.postMessage(new WorkerResponse(request.uuid, id));
       });
 
+    case ClientRequestCommand.DELETE_PLAYLIST:
+      return db.playlists.delete(request.args).then(() => {
+        self.postMessage(new WorkerResponse(request.uuid, true));
+      });
+
     default:
       self.postMessage(new WorkerResponse(request.uuid, 'ERR! Unknown command'));
   }
