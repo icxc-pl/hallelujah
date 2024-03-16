@@ -1,7 +1,6 @@
 export interface IPlaylist {
   id?: number;
-  uuid: string;
-  title: string;
+  name: string;
   color: string | null;
-  songsUuids: string[];
+  songsHashes: string[];
 }

@@ -4,15 +4,14 @@ import { SongVerseFactory } from './SongVerseFactory';
 import { type ISong, Song, SongMeta, SongVerse } from '../model';
 
 const BEGINING: string = HASH + HASH + SPACE;
-let COUNTER: number = 0;
 
 export class SongFactory implements ISong {
   static isBegining(line: string): boolean {
     return line.startsWith(BEGINING);
   }
 
-  uuid: string;
-  id: number | null;
+  hash: string;
+  id?: number;
   title: string;
   normalizedTitle: string;
   meta: SongMeta[];
@@ -21,8 +20,8 @@ export class SongFactory implements ISong {
   currentVerse: SongVerseFactory | null;
 
   constructor(title: string) {
-    this.uuid = "";
-    this.id = ++COUNTER;
+    this.hash = "";
+    this.id = undefined;
     this.title = title.substring(BEGINING.length);
     this.normalizedTitle = "";
     this.meta = [];

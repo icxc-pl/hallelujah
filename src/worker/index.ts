@@ -1,12 +1,29 @@
 /// <reference lib="webworker" />
 import { SongImporter } from '@/lib/songs/SongImporter';
 import { DataBase } from './DataBase';
-import { fetchSongsFile } from './fetch';
+import { fetchSongsFile, fetchLastModified } from './fetch';
 import { ClientRequestCommand, type ClientRequest } from '@/lib/requests';
 import { WorkerResponse } from '@/lib/responses';
 
 console.info("Worker is running");
 const db = new DataBase();
+
+
+function fetchSongs() {
+  return fetchSongsFile().then((res) => {
+    const importer = new SongImporter();
+    importer.process(res.text);
+
+    if (res.date) {
+      (<DataBase>db).putDate(res.date);
+    } else {
+      console.warn("No date in response");
+    }
+  
+    return (<DataBase>db).songs.bulkAdd(importer.songs);
+  });
+}
+
 
 db.on('ready', (db) => {
   console.info("Database is ready");
@@ -14,14 +31,20 @@ db.on('ready', (db) => {
   return (<DataBase>db).songs.count((count) => {
     if (count > 0) {
       console.info("Already populated");
+      return fetchLastModified().then((date) => {
+        return (<DataBase>db).getDate().then((dbDate) => {
+          if (dbDate && date && dbDate.value !== date) {
+            console.info("Database is outdated. Fetching...");
+            (<DataBase>db).songs.clear();
+            return fetchSongs();
+          } else {
+            console.info("Database is up to date");
+          }
+        });
+      });
     } else {
       console.info("Database is empty. Populating...");
-      return fetchSongsFile().then((songsFile) => {
-        const importer = new SongImporter();
-        importer.process(songsFile);
-      
-        return (<DataBase>db).songs.bulkAdd(importer.songs);
-      });
+      return fetchSongs();
     }
   });
 });

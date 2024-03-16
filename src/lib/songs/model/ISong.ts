@@ -3,7 +3,7 @@ import type { ISongVerse } from './ISongVerse';
 
 export interface ISong {
   id?: number;
-  uuid: string;
+  hash: string;
   title: string;
   normalizedTitle: string;
   meta: ISongMeta[];

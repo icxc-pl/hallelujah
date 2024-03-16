@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as entypo from '@iconify-prerendered/vue-entypo';
+import EntypoIcon from './EntypoIcon.vue';
 
 const props = defineProps({
   title: {
@@ -12,27 +12,30 @@ const props = defineProps({
     required: true
   },
   color: {
-    type: String,
-    required: true
+    type: String
   }
 });
 
-const iconComponent = computed(() => entypo['Icon' + props.icon]);
+const _class = computed(() => {
+  const _class = ["icon-button"];
 
-const actionClass = computed(() => {
-  return `action-button action-button-${props.color}`;
+  if (props.color != null) {
+    _class.push(`icon-button-${props.color}`);
+  }
+
+  return _class;
 });
 
 </script>
 
 <template>
-  <button :class="actionClass" type="button" :title="title">
-    <component :is="iconComponent" />
+  <button :class="_class" type="button" :title="title">
+    <EntypoIcon :name="icon" />
   </button>
 </template>
 
 <style lang="less">
-.action-button {
+.icon-button {
   display: block;
   border: 0;
   outline: 0;
@@ -74,7 +77,7 @@ const actionClass = computed(() => {
 }
 
 @media screen and (min-resolution: 2dppx) {
-  .action-button {
+  .icon-button {
     width: 2.1rem;
     height: 2.1rem;
   }

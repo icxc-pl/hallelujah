@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useModal } from 'vue-final-modal';
 import { type IPlaylist } from '../model/IPlaylist';
 import { deletePlaylist } from '@/lib/client';
+import PlaylistMenuModal from './PlaylistMenuModal.vue';
 
-import ActionButton from '@/components/ActionButton.vue';
+import IconButton from '@/components/elements/IconButton.vue';
 
 const props = defineProps({
   playlist: {
@@ -16,7 +18,14 @@ const props = defineProps({
 const emit = defineEmits(['deleted']);
 
 const link = computed((): string => {
-  return '/playlist/' + props.playlist.uuid;
+  return '/playlist/' + props.playlist.id;
+});
+
+const openMenuModal = useModal({
+  component: PlaylistMenuModal,
+  attrs: {
+    playlist: props.playlist
+  }
 });
 
 function confirmDeletePlaylist() {
@@ -36,9 +45,9 @@ function confirmDeletePlaylist() {
 <template>
   <li class="playlists-list-element">
     <RouterLink :to="link">
-      <strong>{{ playlist.title }}</strong>
+      <strong>{{ playlist.name }}</strong>
     </RouterLink>
-    <ActionButton title="Usuń" icon="Trash" color="red" @click.stop="confirmDeletePlaylist" />
+    <IconButton title="Menu" icon="Menu" @click.stop="openMenuModal.open" />
   </li>
 </template>
 

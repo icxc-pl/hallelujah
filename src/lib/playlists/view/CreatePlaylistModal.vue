@@ -4,16 +4,17 @@ import { createPlaylist } from '@/lib/client';
 import { type IPlaylist, Playlist } from '@/lib/playlists/model';
 
 import StandardModal from '@/components/modals/StandardModal.vue';
+import BasicButton from '@/components/elements/BasicButton.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
   (e: 'created', newId: number): number,
 }>()
 
-const title = ref('');
+const name = ref('');
 
 function create() {
-  const val = title.value.trim();
+  const val = name.value.trim();
 
   let playlist: IPlaylist;
   try {
@@ -37,12 +38,12 @@ function create() {
     @update:model-value="val => emit('update:modelValue', val)">
 
     <p class="input-container">
-      <label for="input-title">Tytuł</label>
-      <input type="text" id="input-title" v-model="title" placeholder="Wpisz tytuł playlisty" />
+      <label for="input-name">Nazwa</label>
+      <input type="text" id="input-name" v-model="name" placeholder="Wpisz nazwę playlisty" />
     </p>
 
     <template #footer>
-      <button type="submit" class="positive" @click.prevent="create">Dodaj</button>
+      <BasicButton :main="true" title="Dodaj" icon="Plus" color="green" @click.prevent="create" />
     </template>
 
   </StandardModal>

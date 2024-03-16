@@ -2,10 +2,13 @@ enum SongMetaType {
   AUTHOR = 'author',
   URL = 'url',
   ORIGINAL_TILE = 'original-title',
+  ALTERNATIVE_TILE = 'alternative-title',
   ALBUM = 'album',
   COPYRIGHT = 'copyright',
   TRANSLATION = 'translation',
-  BASED_ON = 'based-on'
+  BASED_ON = 'based-on',
+  LYRICS = 'lyrics',
+  MUSIC = 'music'
 }
 
 function findEnum(needle: string): SongMetaType {

@@ -65,6 +65,7 @@ export class SongImporter {
     }
 
     this.endCurrentsong();
+    
     return this.songs;
   }
 }

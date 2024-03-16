@@ -20,7 +20,7 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
 <template>
   <ul>
     <PlaylistsListElement v-for="playlist in playlists"
-      :key="playlist.uuid"
+      :key="playlist.id"
       :playlist="playlist"
       @deleted="whenPlaylistDeleted" />
   </ul>

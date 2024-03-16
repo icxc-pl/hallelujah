@@ -8,8 +8,8 @@ import { type IPlaylist } from '@/lib/playlists/model';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
-import ToolbarButton from '@/components/toolbar/ToolbarButton.vue';
 import CreatePlaylistModal from '@/lib/playlists/view/CreatePlaylistModal.vue';
+import IconButton from '@/components/elements/IconButton.vue';
 
 
 const createPlaylistModal = useModal({
@@ -51,7 +51,7 @@ refresh();
     :loading-state="container.loading">
 
     <template #toolbar>
-      <ToolbarButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="createPlaylistModal.open" />
+      <IconButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="createPlaylistModal.open" />
     </template>
 
     <template #content>

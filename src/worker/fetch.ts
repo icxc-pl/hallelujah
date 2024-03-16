@@ -7,5 +7,9 @@ export async function fetchLastModified() {
 
 export async function fetchSongsFile() {
   const res = await fetch(SONGS_FILE);
-  return res.text();
+  const text = await res.text();
+  return {
+    text,
+    date: res.headers.get('Last-Modified')
+  }
 }

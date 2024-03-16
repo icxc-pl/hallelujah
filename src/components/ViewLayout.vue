@@ -63,6 +63,12 @@ const contentClass = computed((): string[] => {
     flex-basis: 100%;
     flex-shrink: 1;
   }
+
+  .icon-button {
+    margin: 0;
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 #content {

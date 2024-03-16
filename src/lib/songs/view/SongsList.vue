@@ -13,7 +13,7 @@ defineProps({
 <template>
   <ul>
     <SongsListElement v-for="song in songs"
-      :key="song.uuid"
+      :key="song.id"
       :song="song" />
   </ul>
 </template>

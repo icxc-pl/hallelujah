@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
-import * as entypo from '@iconify-prerendered/vue-entypo';
+import EntypoIcon from '../elements/EntypoIcon.vue';
 
-const props = defineProps({
+defineProps({
   link: {
     type: String,
     required: true
@@ -17,14 +16,12 @@ const props = defineProps({
     required: true
   }
 });
-
-const iconComponent = computed(() => entypo['Icon' + props.icon]);
 </script>
 
 <template>
   <li>
     <RouterLink :to="link" active-class="active">
-      <component :is="iconComponent" />
+      <EntypoIcon :name="icon" />
       <span>{{ text }}</span>
     </RouterLink>
   </li>
