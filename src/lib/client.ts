@@ -105,8 +105,10 @@ export function getPlaylist(id: number): Promise<IPlaylist> {
  * @param playlist IPlaylist
  * @returns Promise<IPlaylist>
  */
-export function createPlaylist(playlist: IPlaylist): Promise<number> {
-  return post(new ClientRequestCreatePlaylist(playlist)) as Promise<number>;
+export async function createPlaylist(playlist: IPlaylist): Promise<IPlaylist> {
+   const id = (await post(new ClientRequestCreatePlaylist(playlist))) as number;
+   playlist.id = id;
+   return playlist;
 }
 
 /**

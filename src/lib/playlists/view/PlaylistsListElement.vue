@@ -3,7 +3,7 @@ import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useModal } from 'vue-final-modal';
 import { type IPlaylist, Playlist, duplicatePlaylist } from '../model';
-import { updatePlaylist, deletePlaylist } from '@/lib/client';
+import { createPlaylist, updatePlaylist, deletePlaylist } from '@/lib/client';
 
 import IconButton from '@/components/elements/IconButton.vue';
 import MenuModal from '@/components/modals/MenuModal.vue';
@@ -20,6 +20,7 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: 'deleted', playlist: IPlaylist): void
   (e: 'updated', playlist: IPlaylist): void
+  (e: 'created', playlist: IPlaylist): void
 }>();
 
 const link = computed((): string => {
@@ -42,7 +43,8 @@ const openMenuModal = useModal({
       },
       {
         title: 'Duplikuj',
-        icon: 'Copy'
+        icon: 'Copy',
+        action: promptDuplicate
       },
       {
         title: 'Usuń',
@@ -133,6 +135,43 @@ async function onConfirmDelete() {
 
   await deletePlaylist(props.playlist.id);
   emit('deleted', props.playlist)
+}
+
+//#endregion
+
+//#region -------------------- Duplicate --------------------
+
+/**
+ * Instancinate the modal to change the name of the playlist
+ */
+ const promptDuplicateModal = useModal({
+  component: PromptModal,
+  attrs: {
+    title: 'Nazwa nowej playlisty',
+    placeholder: 'Wpisz nazwę nowej playlisty',
+    startValue: props.playlist.name + " Kopia",
+    submitButtonTitle: 'Duplikuj',
+    submitButtonIcon: 'Copy',
+    onSubmit: onSubmitDuplicate
+  }
+})
+
+/**
+ * Opens a modal to change the name of the playlist
+ */
+function promptDuplicate() {
+  promptDuplicateModal.open();
+}
+
+
+/**
+ * Updates the name of the playlist
+ * @param val New name of the playlist
+ */
+async function onSubmitDuplicate(val: any) {
+  let duplicat: IPlaylist = duplicatePlaylist(props.playlist, val).toObject();
+  await createPlaylist(duplicat);
+  emit('created', duplicat);
 }
 
 //#endregion

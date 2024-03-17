@@ -35,9 +35,7 @@ const createPlaylistModal = useModal({
 async function submitCreatePlaylist(val: any) {
   let playlist: IPlaylist;
   playlist = new Playlist(val);
-
-  await createPlaylist(playlist);
-  refresh();
+  whenPlaylistCreated(await createPlaylist(playlist));
 }
 
 function refresh() {
@@ -61,6 +59,10 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
   }
 }
 
+function whenPlaylistCreated(playlist: IPlaylist) {
+  (container.data as IPlaylist[]).push(playlist);
+}
+
 refresh();
 
 </script>
@@ -80,7 +82,8 @@ refresh();
         <PlaylistsList v-if="areItems"
           :playlists="(container.data as Array<IPlaylist>)"
           @itemupdated="whenPlaylistUpdated"
-          @itemdeleted="whenPlaylistDeleted" />
+          @itemdeleted="whenPlaylistDeleted"
+          @itemcreated="whenPlaylistCreated" />
         
         <p v-else>
           Nie masz jeszcze żadnej Playlisty. Kliknij na plusik do góry, aby dodać nową.

@@ -5,6 +5,7 @@ import PlaylistsListElement from './PlaylistsListElement.vue';
 const emit = defineEmits<{
   (e: 'itemupdated', playlist: IPlaylist): void
   (e: 'itemdeleted', playlist: IPlaylist): void
+  (e: 'itemcreated', playlist: IPlaylist): void
 }>();
 
 
@@ -23,6 +24,10 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
   emit('itemdeleted', playlist);
 }
 
+function whenPlaylistCreated(playlist: IPlaylist) {
+  emit('itemcreated', playlist);
+}
+
 </script>
 
 <template>
@@ -31,7 +36,8 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
       :key="playlist.id"
       :playlist="playlist"
       @updated="whenPlaylistUpdated"
-      @deleted="whenPlaylistDeleted" />
+      @deleted="whenPlaylistDeleted"
+      @created="whenPlaylistCreated" />
   </ul>
 </template>
 
