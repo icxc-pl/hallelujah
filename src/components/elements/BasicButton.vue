@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, withDefaults, defineProps } from 'vue';
+import { computed, withDefaults } from 'vue';
 import { type IBasicButton } from './IBasicButton';
 import EntypoIcon from './EntypoIcon.vue';
 

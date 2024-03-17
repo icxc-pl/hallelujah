@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type PropType } from 'vue';
+import { ref, type Ref, type PropType } from 'vue';
 
 import StandardModal from './StandardModal.vue';
 import BasicButton from '../elements/BasicButton.vue';

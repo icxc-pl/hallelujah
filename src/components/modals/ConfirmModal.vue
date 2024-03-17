@@ -1,30 +1,64 @@
 <script setup lang="ts">
-import { VueFinalModal } from 'vue-final-modal'
+import { type PropType } from 'vue';
 
-defineProps({
+import StandardModal from './StandardModal.vue';
+import BasicButton from '../elements/BasicButton.vue';
+
+const props = defineProps({
   question: {
     type: String,
     required: true
+  },
+
+  onConfirm: {
+    type: Function as PropType<() => Promise<any>>,
+    required: true
+  },
+  confirmButtonTitle: {
+    type: String,
+    default: 'Potwierdzam'
+  },
+  confirmButtonIcon: {
+    type: String,
+    default: 'Check'
+  },
+  confirmButtonColor: {
+    type: String,
+    default: 'green'
   }
 });
 
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: boolean): void
-  (e: 'confirm'): void
 }>()
+
+function confirm() {
+  props.onConfirm().then(() => {
+    emit('update:modelValue', false)
+  }).catch((e: any) => {
+    alert("Wystąpił błąd: " + e.message);
+  });
+}
+
 </script>
 
 <template>
-  <VueFinalModal
-    :click-to-close="false"
-    :esc-to-close="false"
-    overlay-transition="vfm-fade"
-    content-transition="vfm-slide-down"
-    @update:model-value="val => emit('update:modelValue', val)"
-  >
-    <p>{{ question }}</p>>
-    <button class="mt-1 ml-auto px-2 border rounded-lg" @click="emit('confirm')">
-      Confirm
-    </button>
-  </VueFinalModal>
+  <StandardModal
+    close-text="Anuluj"
+    @update:model-value="val => emit('update:modelValue', val)">
+
+    <p>
+      {{ props.question  }}
+    </p>
+
+    <template #footer>
+      <BasicButton
+        :main="true"
+        :title="props.confirmButtonTitle"
+        :icon="props.confirmButtonIcon"
+        :color="confirmButtonColor"
+        @click.prevent="confirm" />
+    </template>
+
+  </StandardModal>
 </template>

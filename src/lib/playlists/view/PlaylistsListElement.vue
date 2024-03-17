@@ -2,13 +2,13 @@
 import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useModal } from 'vue-final-modal';
-import { type IPlaylist, Playlist } from '../model';
-import { deletePlaylist, updatePlaylist } from '@/lib/client';
+import { type IPlaylist, Playlist, duplicatePlaylist } from '../model';
+import { updatePlaylist, deletePlaylist } from '@/lib/client';
 
 import IconButton from '@/components/elements/IconButton.vue';
 import MenuModal from '@/components/modals/MenuModal.vue';
 import PromptModal from '@/components/modals/PromptModal.vue';
-import { duplicatePlaylist } from '../model';
+import ConfirmModal from '@/components/modals/ConfirmModal.vue';
 
 const props = defineProps({
   playlist: {
@@ -25,6 +25,8 @@ const emit = defineEmits<{
 const link = computed((): string => {
   return '/playlist/' + props.playlist.id;
 });
+
+//#region -------------------- Menu --------------------
 
 /**
  * Instancinate the modal with options for the playlist
@@ -46,11 +48,15 @@ const openMenuModal = useModal({
         title: 'Usuń',
         icon: 'Trash',
         color: 'red',
-        action: confirmDeletePlaylist
+        action: confirmDelete
       }
     ]
   }
 });
+
+//#endregion
+
+//#region -------------------- Change name --------------------
 
 /**
  * Instancinate the modal to change the name of the playlist
@@ -61,15 +67,25 @@ const promptChangeNameModal = useModal({
     title: 'Nowa nazwa playlisty',
     placeholder: 'Wpisz nową nazwę playlisty',
     startValue: props.playlist.name,
-    onSubmit: submitChangeName
+    submitButtonTitle: 'Zapisz',
+    submitButtonIcon: 'Save',
+    onSubmit: onSubmitChangeName
   }
 })
+
+/**
+ * Opens a modal to change the name of the playlist
+ */
+function promptChangeName() {
+  promptChangeNameModal.open();
+}
+
 
 /**
  * Updates the name of the playlist
  * @param val New name of the playlist
  */
-async function submitChangeName(val: any) {
+async function onSubmitChangeName(val: any) {
   let updated: IPlaylist = duplicatePlaylist(props.playlist, val).toObject();
   updated.id = props.playlist.id
   await updatePlaylist(updated);
@@ -82,24 +98,44 @@ async function submitChangeName(val: any) {
   emit('updated', updated);
 }
 
+//#endregion
+
+//#region -------------------- Delete --------------------
+
 /**
- * Opens a modal to change the name of the playlist
+ * Instancinate the modal to delete the playlist
  */
-function promptChangeName() {
-  promptChangeNameModal.open();
-}
-
-function confirmDeletePlaylist() {
-  if (confirm("Czy na pewno chcesz usunąć Playlistę?")) {
-    if (props.playlist.id == null) {
-      return;
-    }
-
-    deletePlaylist(props.playlist.id).then(() => {
-      emit('deleted', props.playlist);
-    });
+ const confirmDeleteModal = useModal({
+  component: ConfirmModal,
+  attrs: {
+    question: 'Czy na pewno chcesz usunąć playlistę?',
+    confirmButtonTitle: 'Usuń',
+    confirmButtonIcon: 'Trash',
+    confirmButtonColor: 'red',
+    onConfirm: onConfirmDelete
   }
+})
+
+/**
+ * Opens a modal to confirm the deletion of the playlist
+ */
+function confirmDelete() {
+  confirmDeleteModal.open();
 }
+
+/**
+ * Execute when used confirmed the deletion of the playlist
+ */
+async function onConfirmDelete() {
+  if(props.playlist.id == null) {
+    throw new Error('Ta playlista nie ma id...');
+  }
+
+  await deletePlaylist(props.playlist.id);
+  emit('deleted', props.playlist)
+}
+
+//#endregion
 
 </script>
 
