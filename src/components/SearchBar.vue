@@ -5,7 +5,10 @@ import { filoTimeGate } from '@/common/time-gate/index';
 
 let lastPhrase = "";
 const phrase = ref("");
-const emit = defineEmits(["input"]);
+
+const emit = defineEmits<{
+  (e: 'input', phrase: string): void
+}>()
 
 const gate = filoTimeGate(500, (phrase: string) => {
   if (lastPhrase == phrase) {

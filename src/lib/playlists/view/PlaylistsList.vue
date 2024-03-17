@@ -2,7 +2,11 @@
 import { type IPlaylist } from '../model/IPlaylist';
 import PlaylistsListElement from './PlaylistsListElement.vue';
 
-const emit = defineEmits(['itemdeleted']) ;
+const emit = defineEmits<{
+  (e: 'itemupdated', playlist: IPlaylist): void
+  (e: 'itemdeleted', playlist: IPlaylist): void
+}>();
+
 
 defineProps({
   playlists: {
@@ -10,6 +14,10 @@ defineProps({
     required: true
   }
 });
+
+function whenPlaylistUpdated(playlist: IPlaylist) {
+  emit('itemupdated', playlist);
+}
 
 function whenPlaylistDeleted(playlist: IPlaylist) {
   emit('itemdeleted', playlist);
@@ -22,6 +30,7 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
     <PlaylistsListElement v-for="playlist in playlists"
       :key="playlist.id"
       :playlist="playlist"
+      @updated="whenPlaylistUpdated"
       @deleted="whenPlaylistDeleted" />
   </ul>
 </template>

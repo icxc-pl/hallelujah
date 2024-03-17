@@ -3,5 +3,5 @@
 }
 
 .modal-window-leave-active {
-  animation: fuse 0.3s reverse;
+  animation: fade-out 0.15s;
 }

@@ -4,7 +4,7 @@ import type { ISong } from "./songs/model/ISong";
 import { ClientRequestListSongs, ClientRequestSearchSongs, ClientRequestGetSong } from "./songs/requests";
 
 import type { IPlaylist } from "./playlists/model/IPlaylist";
-import { ClientRequestListPlaylists, ClientRequestGetPlaylist, ClientRequestCreatePlaylist, ClientRequestDeletePlaylist } from "./playlists/requests";
+import { ClientRequestListPlaylists, ClientRequestGetPlaylist, ClientRequestCreatePlaylist, ClientRequestDeletePlaylist, ClientRequestUpdatePlaylist } from "./playlists/requests";
 
 import type { WorkerResponse } from "./responses/WorkerResponse";
 
@@ -116,4 +116,13 @@ export function createPlaylist(playlist: IPlaylist): Promise<number> {
  */
 export function deletePlaylist(id: number): Promise<boolean> {
   return post(new ClientRequestDeletePlaylist(id)) as Promise<boolean>;
+}
+
+/**
+ * Update playlist
+ * @param playlist IPlaylist
+ * @returns Promise<IPlaylist>
+ */
+export function updatePlaylist(playlist: IPlaylist): Promise<IPlaylist> {
+  return post(new ClientRequestUpdatePlaylist(playlist)) as Promise<IPlaylist>;
 }

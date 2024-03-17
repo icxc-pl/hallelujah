@@ -53,7 +53,7 @@ db.open();
 
 
 self.onmessage = (event: MessageEvent) => {
-  // console.log("[Worker] otrzymałem wiadomość", event.data);
+  console.log("[Worker] otrzymałem wiadomość", event.data);
   const request: ClientRequest = event.data;
   
   switch (request.command) {
@@ -89,6 +89,11 @@ self.onmessage = (event: MessageEvent) => {
 
     case ClientRequestCommand.DELETE_PLAYLIST:
       return db.playlists.delete(request.args).then(() => {
+        self.postMessage(new WorkerResponse(request.uuid, true));
+      });
+
+    case ClientRequestCommand.UPDATE_PLAYLIST:
+      return db.playlists.update(request.args.id, request.args).then(() => {
         self.postMessage(new WorkerResponse(request.uuid, true));
       });
 

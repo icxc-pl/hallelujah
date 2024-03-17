@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type TransitionProps } from 'vue';
+import { ref, computed, type TransitionProps } from 'vue';
 import { VueFinalModal } from 'vue-final-modal'
 
 const props = defineProps({
@@ -10,6 +10,9 @@ const props = defineProps({
   closeText: {
     type: String,
     default: 'OK'
+  },
+  extraWindowClass: {
+    type: String
   }
 });
 
@@ -22,6 +25,14 @@ const ModalWindowTransition = ref<TransitionProps>({
   css: true
 });
 
+const contentClass = computed(() => {
+  const classes = ['modal-window'];
+  if (typeof props.extraWindowClass == "string" && props.extraWindowClass.length > 0) {
+    classes.push(props.extraWindowClass);
+  }
+  return classes;
+});
+
 </script>
 
 <template>
@@ -32,7 +43,7 @@ const ModalWindowTransition = ref<TransitionProps>({
     overlay-transition="vfm-fade"
     overlay-class="modal-backdrop"
     :content-transition="ModalWindowTransition"
-    content-class="modal-window"
+    :content-class="contentClass"
     @update:model-value="val => emit('update:modelValue', val)">
 
     <div v-if="props.title" class="modal-header">

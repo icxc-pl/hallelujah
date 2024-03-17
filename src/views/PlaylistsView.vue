@@ -3,23 +3,13 @@ import { computed, reactive } from 'vue';
 import { useModal } from 'vue-final-modal';
 // import SearchBar from '@/components/SearchBar.vue';
 import PlaylistsList from '@/lib/playlists/view/PlaylistsList.vue';
-import { getPlaylistsList } from '@/lib/client';
-import { type IPlaylist } from '@/lib/playlists/model';
+import { getPlaylistsList, createPlaylist } from '@/lib/client';
+import { type IPlaylist, Playlist } from '@/lib/playlists/model';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
-import CreatePlaylistModal from '@/lib/playlists/view/CreatePlaylistModal.vue';
+import PromptModal from '@/components/modals/PromptModal.vue';
 import IconButton from '@/components/elements/IconButton.vue';
-
-
-const createPlaylistModal = useModal({
-  component: CreatePlaylistModal,
-  attrs: {
-    onCreated: () => {
-      refresh();
-    }
-  }
-});
 
 const container: DataContainer = reactive(new DataContainer());
 
@@ -27,11 +17,41 @@ const areItems = computed(() => {
   return container.data instanceof Array && container.data.length > 0;
 });
 
+const createPlaylistModal = useModal({
+  component: PromptModal,
+  attrs: {
+    title: "Nazwa nowej Playlisty",
+    placeholder: "Wpisz nazwę nowej Playlisty",
+
+    submitButtonTitle: "Dodaj",
+    submitButtonColor: "green",
+    submitButtonIcon: "Plus",
+
+    onSubmit: submitCreatePlaylist
+  }
+});
+
+
+async function submitCreatePlaylist(val: any) {
+  let playlist: IPlaylist;
+  playlist = new Playlist(val);
+
+  await createPlaylist(playlist);
+  refresh();
+}
+
 function refresh() {
   container.setLoading(true);
   getPlaylistsList().then((data: Array<IPlaylist>) => {
     container.setData(data);
   });
+}
+
+function whenPlaylistUpdated(playlist: IPlaylist) {
+  const idx = (container.data as IPlaylist[]).findIndex((p) => p.id === playlist.id);
+  if (idx >= 0) {
+    (container.data as IPlaylist[])[idx] = playlist;
+  }
 }
 
 function whenPlaylistDeleted(playlist: IPlaylist) {
@@ -59,7 +79,8 @@ refresh();
       <template v-if="!container.loading">
         <PlaylistsList v-if="areItems"
           :playlists="(container.data as Array<IPlaylist>)"
-          @itemdeleted="whenPlaylistDeleted"  />
+          @itemupdated="whenPlaylistUpdated"
+          @itemdeleted="whenPlaylistDeleted" />
         
         <p v-else>
           Nie masz jeszcze żadnej Playlisty. Kliknij na plusik do góry, aby dodać nową.

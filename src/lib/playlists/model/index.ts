@@ -1,7 +1,8 @@
 import { type IPlaylist } from "./IPlaylist";
-import { Playlist } from "./Playlist";
+import { Playlist, duplicatePlaylist } from "./Playlist";
 
 export {
   type IPlaylist,
-  Playlist
+  Playlist,
+  duplicatePlaylist
 };

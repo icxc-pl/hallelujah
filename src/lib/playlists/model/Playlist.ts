@@ -19,4 +19,20 @@ export class Playlist implements IPlaylist {
     this.color = null;
     this.songsHashes = [];    
   }
+
+  toObject(): IPlaylist {
+    return {
+      id: this.id,
+      name: this.name,
+      color: this.color,
+      songsHashes: this.songsHashes
+    };
+  }
+}
+
+export function duplicatePlaylist(playlist: IPlaylist, newTitle?: string): Playlist {
+  const newPLaylist = new Playlist(newTitle ? newTitle : playlist.name);
+  newPLaylist.color = playlist.color;
+  newPLaylist.songsHashes = playlist.songsHashes.slice();
+  return newPLaylist;
 }

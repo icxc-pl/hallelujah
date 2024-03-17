@@ -1,23 +1,11 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, withDefaults, defineProps } from 'vue';
+import { type IBasicButton } from './IBasicButton';
 import EntypoIcon from './EntypoIcon.vue';
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  icon: {
-    type: String,
-    required: true
-  },
-  color: {
-    type: String
-  },
-  main: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<IBasicButton>(), {
+  color: '',
+  main: false
 });
 
 const _type = computed(() => {
