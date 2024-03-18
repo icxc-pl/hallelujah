@@ -2,13 +2,14 @@
 import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useModal } from 'vue-final-modal';
-import { type IPlaylist, Playlist, duplicatePlaylist } from '../model';
-import { createPlaylist, updatePlaylist, deletePlaylist } from '@/lib/client';
 
 import IconButton from '@/components/elements/IconButton.vue';
 import MenuModal from '@/components/modals/MenuModal.vue';
 import PromptModal from '@/components/modals/PromptModal.vue';
 import ConfirmModal from '@/components/modals/ConfirmModal.vue';
+
+import { type IPlaylist, duplicatePlaylist } from '../model';
+import { createPlaylist, updatePlaylist, deletePlaylist } from '@/lib/client';
 
 const props = defineProps({
   playlist: {
@@ -32,7 +33,7 @@ const link = computed((): string => {
 /**
  * Instancinate the modal with options for the playlist
  */
-const openMenuModal = useModal({
+const openOptionsModal = useModal({
   component: MenuModal,
   attrs: {
     buttons: [
@@ -183,7 +184,7 @@ async function onSubmitDuplicate(val: any) {
     <RouterLink :to="link">
       <strong>{{ playlist.name }}</strong>
     </RouterLink>
-    <IconButton title="Menu" icon="Menu" @click.stop="openMenuModal.open" />
+    <IconButton title="Opcje" icon="Menu" @click.stop="openOptionsModal.open" />
   </li>
 </template>
 

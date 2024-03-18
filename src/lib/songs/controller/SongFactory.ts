@@ -1,46 +1,48 @@
 import { HASH, SPACE, GT } from '@/common/constants';
 import { SongMetaFactory } from './SongMetaFactory';
 import { SongVerseFactory } from './SongVerseFactory';
-import { type ISong, Song, SongMeta, SongVerse } from '../model';
+import { type ISong, type ISongMeta, type ISongVerse } from '../model';
+import { normalizeText } from '@/common/helpers';
+import { blake2bHex } from 'blakejs';
 
 const BEGINING: string = HASH + HASH + SPACE;
 
 export class SongFactory implements ISong {
+
   static isBegining(line: string): boolean {
     return line.startsWith(BEGINING);
   }
 
-  hash: string;
   id?: number;
+  hash: string;
   title: string;
   normalizedTitle: string;
-  meta: SongMeta[];
-  verses: SongVerse[];
+  meta: SongMetaFactory;
+  verses: ISongVerse[];
 
-  currentVerse: SongVerseFactory | null;
+  currentVerse?: SongVerseFactory;
 
   constructor(title: string) {
     this.hash = "";
-    this.id = undefined;
     this.title = title.substring(BEGINING.length);
     this.normalizedTitle = "";
-    this.meta = [];
+    this.meta = new SongMetaFactory();
     this.verses = [];
 
-    this.currentVerse = null;
+    this.currentVerse = undefined;
   }
 
   finishVerse(): void {
     if (this.currentVerse != null) {
       this.verses.push(this.currentVerse.get());
-      this.currentVerse = null;
+      delete this.currentVerse;
     }
   }
 
   addLine(line: string): void {
     if (line.startsWith(GT)) {
       try {
-        this.meta.push(SongMetaFactory.processLine(line));
+        this.meta.processLine(line);
       } catch (e) {
         console.warn(e as string);
       }
@@ -53,7 +55,17 @@ export class SongFactory implements ISong {
     }
   }
 
-  get(): Song {
-    return new Song(this.title, this.meta, this.verses);
+  get(): ISong {
+    return createSong(this.title, this.meta.get(), this.verses);
   }
+}
+
+export function createSong(title: string, meta: ISongMeta, verses: ISongVerse[]): ISong {
+  return {
+    hash: blake2bHex(title, undefined, 4),
+    title,
+    normalizedTitle: normalizeText(title),
+    meta: meta,
+    verses: verses
+  };
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type IPlaylist } from '../model/IPlaylist';
+import { type IPlaylist } from '../model';
 import PlaylistsListElement from './PlaylistsListElement.vue';
 
 const emit = defineEmits<{

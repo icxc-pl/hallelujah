@@ -6,6 +6,6 @@ export interface ISong {
   hash: string;
   title: string;
   normalizedTitle: string;
-  meta: ISongMeta[];
+  meta: ISongMeta;
   verses: ISongVerse[];
 }

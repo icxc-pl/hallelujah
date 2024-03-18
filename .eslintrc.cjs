@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   rules: {
-    'no-control-regex': 'off'
+    'no-control-regex': 'off',
+    'no-prototype-builtins': 'off',
   }
 }

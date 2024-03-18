@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-// import { } from 'vue';
-import type { ISongVerse } from '../model/ISongVerse';
+import type { ISongVerse } from '../model';
 import SongVerseElement from './SongVerseElement.vue';
 
 defineProps({
@@ -12,7 +11,9 @@ defineProps({
 </script>
 
 <template>
-  <SongVerseElement v-for="verse of verses"
-    :key="verse.uuid"
-    :verse="verse" />
+  <div class="song-verses">
+    <SongVerseElement v-for="verse of verses"
+      :key="verse.uuid"
+      :verse="verse" />
+  </div>
 </template>

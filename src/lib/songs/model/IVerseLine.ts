@@ -1,5 +1,5 @@
 export interface IVerseLine {
-  uuid: string;
+  uuid?: string;
   text: string;
   chord: string;
 }

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
+const router = useRoute();
 
 const props = defineProps({
   title: {
@@ -27,9 +29,18 @@ const viewTitle = computed((): string => {
 
 const contentClass = computed((): string[] => {
   const classes = [];
+  
+  // Add to classes current page name from vue router
+  const currentRouteName = router.name;
+  if (currentRouteName) {
+    classes.push(`content-view-${currentRouteName.toString()}`);
+  }
+
+  // Add loading class
   if (props.loadingEnabled && props.loadingState) {
     classes.push('content-loading');
   }
+
   return classes;
 });
 

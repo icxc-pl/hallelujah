@@ -1,11 +1,11 @@
 import { HASH, SPACE, NL, EMPTY_STRING } from '@/common/constants';
-import { Song } from './model/Song';
+import { type ISong } from './model';
 import { SongFactory } from './controller/SongFactory';
 
 const BEGINING: string = HASH + SPACE;
 
 export class SongImporter {
-  songs: Song[];
+  songs: ISong[];
   currentSong: SongFactory | null;
 
   constructor() {
@@ -37,7 +37,7 @@ export class SongImporter {
     this.currentSong = null;
   }
 
-  process(content: string): Song[] {
+  process(content: string): ISong[] {
     this.songs = [];
     const lines = this.getLines(content);
 

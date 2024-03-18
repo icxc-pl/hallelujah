@@ -1,17 +1,12 @@
+import { v4 as uuid } from 'uuid';
 import { VerseLineFactory } from './VerseLineFactory';
-import { type ISongVerse, SongVerse, VerseLine } from '../model';
+import { type ISongVerse, type IVerseLine } from '../model';
 
 export class SongVerseFactory implements ISongVerse {
-  uuid: string;
-  lines: VerseLine[];
+  lines: IVerseLine[];
 
   constructor() {
-    this.uuid = "";
     this.lines = [];
-  }
-
-  addLine(text: string, chord: string): void {
-    this.lines.push(new VerseLine(text, chord));
   }
 
   processLine(line: string): void {
@@ -22,7 +17,14 @@ export class SongVerseFactory implements ISongVerse {
     return this.lines.length == 0;
   }
 
-  get(): SongVerse {
-    return new SongVerse(this.lines);
+  get(): ISongVerse {
+    return createSongVerse(this.lines);
   }
+}
+
+export function createSongVerse(lines: IVerseLine[]): ISongVerse {
+  return {
+    uuid: uuid(),
+    lines
+  };
 }

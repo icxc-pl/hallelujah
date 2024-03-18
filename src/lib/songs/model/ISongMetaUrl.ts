@@ -1,6 +1,8 @@
-import type { ISongMeta } from './ISongMeta';
-import { SongMetaUrlType } from './SongMetaUrlType';
+import type { SongMetaUrlType } from "./SongMetaUrlType";
 
-export interface ISongMetaUrl extends ISongMeta {
-  urlType: SongMetaUrlType;
+export interface ISongMetaUrl {
+  type: SongMetaUrlType;
+  value: string;
 }
+
+export type ISongMetaUrlKeys = keyof ISongMetaUrl;

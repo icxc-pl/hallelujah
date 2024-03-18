@@ -1,6 +1,6 @@
 import type { IVerseLine } from './IVerseLine';
 
 export interface ISongVerse {
-  uuid: string;
+  uuid?: string;
   lines: IVerseLine[];
 }

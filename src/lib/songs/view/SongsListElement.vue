@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
-import { type ISong } from '../model/ISong';
-import { SongMeta } from '../model/SongMeta';
-import { SongMetaType } from '../model/SongMetaType';
-
+import { type ISong } from '../model';
 
 const props = defineProps({
   song: {
@@ -17,20 +14,8 @@ const link = computed((): string => {
   return '/song/' + props.song.id;
 });
 
-const metaList = computed((): SongMeta[] => {
-  const metaList: SongMeta[] = [];
-  
-  for (const meta of props.song.meta) {
-    if (meta.type == SongMetaType.AUTHOR) {
-      metaList.push(meta);
-    }
-  }
-
-  return metaList;
-});
-
 const shouldRenderMeta = computed((): boolean => {
-  return metaList.value.length > 0;
+  return props.song.meta.author != null;
 });
 </script>
 
@@ -39,11 +24,8 @@ const shouldRenderMeta = computed((): boolean => {
     <RouterLink :to="link">
       <strong>{{ song.title }}</strong>
       <dl v-if="shouldRenderMeta">
-        <template v-for="meta in metaList"
-          :key="meta.uuid">
-          <dt>{{ meta.type }}</dt>
-          <dd>{{ meta.value }}</dd>
-        </template>
+        <dt>Author</dt>
+        <dd>{{ song.meta.author }}</dd>
       </dl>
     </RouterLink>
   </li>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type ISong } from '../model/ISong';
+import { type ISong } from '../model';
 import SongsListElement from './SongsListElement.vue';
 
 defineProps({

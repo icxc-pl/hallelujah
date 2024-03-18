@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useOptionsStore } from '@/stores/options';
 import type { PropType } from 'vue';
-import type { ISongVerse } from '../model/ISongVerse';
+import type { ISongVerse } from '../model';
 
 const options = useOptionsStore();
 
