@@ -17,6 +17,8 @@ const areItems = computed(() => {
   return container.data instanceof Array && container.data.length > 0;
 });
 
+//#region -------------------- Create playlist --------------------
+
 const createPlaylistModal = useModal({
   component: PromptModal,
   attrs: {
@@ -31,19 +33,19 @@ const createPlaylistModal = useModal({
   }
 });
 
-
 async function submitCreatePlaylist(val: any) {
   let playlist: IPlaylist;
   playlist = new Playlist(val);
   whenPlaylistCreated(await createPlaylist(playlist));
 }
 
-function refresh() {
-  container.setLoading(true);
-  getPlaylistsList().then((data: Array<IPlaylist>) => {
-    container.setData(data);
-  });
+function whenPlaylistCreated(playlist: IPlaylist) {
+  (container.data as IPlaylist[]).push(playlist);
 }
+
+//#endregion
+
+//#region -------------------- Update playlist --------------------
 
 function whenPlaylistUpdated(playlist: IPlaylist) {
   const idx = (container.data as IPlaylist[]).findIndex((p) => p.id === playlist.id);
@@ -52,6 +54,10 @@ function whenPlaylistUpdated(playlist: IPlaylist) {
   }
 }
 
+//#endregion
+
+//#region -------------------- Delete playlist --------------------
+
 function whenPlaylistDeleted(playlist: IPlaylist) {
   const idx = (container.data as IPlaylist[]).indexOf(playlist);
   if (idx >= 0) {
@@ -59,8 +65,13 @@ function whenPlaylistDeleted(playlist: IPlaylist) {
   }
 }
 
-function whenPlaylistCreated(playlist: IPlaylist) {
-  (container.data as IPlaylist[]).push(playlist);
+//#endregion
+
+function refresh() {
+  container.setLoading(true);
+  getPlaylistsList().then((data: Array<IPlaylist>) => {
+    container.setData(data);
+  });
 }
 
 refresh();
