@@ -19,38 +19,33 @@ import type { ISong } from '@/lib/songs/model/ISong';
 
 const route = useRoute();
 const state = useStateStore();
-const { currentSongIndex } = storeToRefs(state);
+const { currentSongHash } = storeToRefs(state);
 
 const container: DataContainer = shallowReactive(new DataContainer());
 
 /**
- * Get the current song id from the url
+ * Get the current song hash from the url
  */
-function getCurrentIdFromUrl() {
-  const pid = route.params['id'] as string;
-  const id = parseInt(pid);
-  if (isNaN(id)) {
-    return null;
-  }
-  return id;
+function getCurrentHashFromUrl() {
+  return route.params['hash'] as string;
 }
 
 /**
  * When the view is activated, load the song from the server
  */
 onActivated(() => {
-  const idFromUrl = getCurrentIdFromUrl();
+  const hash = getCurrentHashFromUrl();
   
-  if (idFromUrl === null) {
+  if (hash === null) {
     return;
   }
 
-  getSong(idFromUrl).then((data) => {
+  getSong(hash).then((data) => {
     container.setData(data);
   });
 
-  if (currentSongIndex.value != idFromUrl) {
-    currentSongIndex.value = idFromUrl;
+  if (currentSongHash.value != hash) {
+    currentSongHash.value = hash;
   }
 });
 

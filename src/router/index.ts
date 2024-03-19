@@ -14,7 +14,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/song/:id',
+      path: '/song/:hash',
       name: 'song',
       component: SongView
     },

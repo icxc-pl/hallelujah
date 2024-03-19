@@ -75,16 +75,16 @@ export function searchSongs(query: string): Promise<Array<ISong>> {
 
 /**
  * Get song
- * @param id number
+ * @param hash Song hash
  * @returns Promise<ISong>
  */
-export function getSong(id: number): Promise<ISong> {
-  return post(new ClientRequestGetSong(id)) as Promise<ISong>;
+export function getSong(hash: string): Promise<ISong> {
+  return post(new ClientRequestGetSong(hash)) as Promise<ISong>;
 }
 
 
 /**
- * Get songs list
+ * Get playlists list
  * @returns Promise<Array<IPlaylist>>
  */
 export function getPlaylistsList(): Promise<Array<IPlaylist>> {
@@ -92,9 +92,9 @@ export function getPlaylistsList(): Promise<Array<IPlaylist>> {
 }
 
 /**
- * Get song
+ * Get playlist
  * @param id number
- * @returns Promise<ISong>
+ * @returns Promise<IPlaylist>
  */
 export function getPlaylist(id: number): Promise<IPlaylist> {
   return post(new ClientRequestGetPlaylist(id)) as Promise<IPlaylist>;

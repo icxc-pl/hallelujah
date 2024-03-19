@@ -13,7 +13,6 @@ export class SongFactory implements ISong {
     return line.startsWith(BEGINING);
   }
 
-  id?: number;
   hash: string;
   title: string;
   normalizedTitle: string;

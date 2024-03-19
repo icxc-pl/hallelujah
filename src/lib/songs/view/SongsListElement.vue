@@ -11,7 +11,7 @@ const props = defineProps({
 });
 
 const link = computed((): string => {
-  return '/song/' + props.song.id;
+  return '/song/' + props.song.hash;
 });
 
 const shouldRenderMeta = computed((): boolean => {

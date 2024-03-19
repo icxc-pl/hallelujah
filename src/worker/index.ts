@@ -31,15 +31,19 @@ db.on('ready', (db) => {
   return (<DataBase>db).songs.count((count) => {
     if (count > 0) {
       console.info("Already populated");
+
       return fetchLastModified().then((date) => {
         return (<DataBase>db).getDate().then((dbDate) => {
+
           if (dbDate && date && dbDate.value !== date) {
             console.info("Database is outdated. Fetching...");
             (<DataBase>db).songs.clear();
             return fetchSongs();
+
           } else {
             console.info("Database is up to date");
           }
+
         });
       });
     } else {
