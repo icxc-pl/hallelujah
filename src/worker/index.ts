@@ -80,6 +80,23 @@ self.onmessage = (event: MessageEvent) => {
       return db.playlists.get(request.args).then((playlist) => {
         self.postMessage(new WorkerResponse(request.uuid, playlist));
       });
+
+    case ClientRequestCommand.LIST_PLAYLIST_SONGS:
+      return db.playlists.get(request.args).then((playlist) => {
+        if (playlist == null) {
+          self.postMessage(new WorkerResponse(request.uuid, 'ERR! Playlist not found'));
+          return;
+        }
+
+        if (playlist.songsHashes.length === 0) {
+          self.postMessage(new WorkerResponse(request.uuid, []));
+          return;
+        }
+
+        return db.songs.where('hash').anyOf(playlist.songsHashes).toArray().then((songs) => {
+          self.postMessage(new WorkerResponse(request.uuid, songs));
+        });
+      });
     
     case ClientRequestCommand.LIST_PLAYLISTS:
       return db.playlists.toArray().then((playlists) => {
