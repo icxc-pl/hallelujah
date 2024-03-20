@@ -4,7 +4,7 @@ import type { ISong } from "./songs/model/ISong";
 import { ClientRequestListSongs, ClientRequestSearchSongs, ClientRequestGetSong } from "./songs/requests";
 
 import type { IPlaylist } from "./playlists/model/IPlaylist";
-import { ClientRequestListPlaylists, ClientRequestGetPlaylist, ClientRequestCreatePlaylist, ClientRequestDeletePlaylist, ClientRequestUpdatePlaylist } from "./playlists/requests";
+import { ClientRequestListPlaylists, ClientRequestListPlaylistsWithoutSong, ClientRequestGetPlaylist, ClientRequestCreatePlaylist, ClientRequestDeletePlaylist, ClientRequestUpdatePlaylist } from "./playlists/requests";
 
 import type { WorkerResponse } from "./responses/WorkerResponse";
 
@@ -82,13 +82,20 @@ export function getSong(hash: string): Promise<ISong> {
   return post(new ClientRequestGetSong(hash)) as Promise<ISong>;
 }
 
-
 /**
  * Get playlists list
  * @returns Promise<Array<IPlaylist>>
  */
 export function getPlaylistsList(): Promise<Array<IPlaylist>> {
   return post(new ClientRequestListPlaylists()) as Promise<Array<IPlaylist>>;
+}
+
+/**
+ * Get playlists list without song
+ * @returns Promise<Array<IPlaylist>>
+ */
+export function getPlaylistsListWithoutSong(hash: string): Promise<Array<IPlaylist>> {
+  return post(new ClientRequestListPlaylistsWithoutSong(hash)) as Promise<Array<IPlaylist>>;
 }
 
 /**

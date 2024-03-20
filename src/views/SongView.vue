@@ -14,7 +14,7 @@ import SelectModal from '@/components/modals/SelectModal.vue';
 import { DataContainer } from '@/lib/vue/DataContainer';
 import { SelectOption } from '@/lib/vue/SelectOption';
 
-import { getSong, getPlaylist, getPlaylistsList, updatePlaylist } from '@/lib/client';
+import { getSong, getPlaylist, getPlaylistsListWithoutSong, updatePlaylist } from '@/lib/client';
 import SongVersesList from '@/lib/songs/view/SongVersesList.vue';
 import SongMetaContainer from '@/lib/songs/view/SongMetaContainer.vue';
 import { type ISong } from '@/lib/songs/model';
@@ -113,13 +113,11 @@ function choosePlaylist() {
  * Fetches the playlists and returns them as options
  */
 async function fetchPlaylistsAsOptions() {
-  const data: IPlaylist[] = await getPlaylistsList();
+  const data: IPlaylist[] = await getPlaylistsListWithoutSong(hash.value);
   const options: SelectOption[] = [];
-  let select = true;
   for (let p of data) {
-    if (p.id != null && !p.songsHashes.includes(hash.value)) {
-      options.push(new SelectOption(`${p.id}`, p.name, select));
-      select = false;
+    if (p.id != null) {
+      options.push(new SelectOption(`${p.id}`, p.name));
     }
   }
   return options;

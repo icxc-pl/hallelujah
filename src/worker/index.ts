@@ -86,6 +86,13 @@ self.onmessage = (event: MessageEvent) => {
         self.postMessage(new WorkerResponse(request.uuid, playlists));
       });
 
+    case ClientRequestCommand.LIST_PLAYLISTS_WITHOUT_SONG:
+      return db.playlists.where('songsHashes').noneOf([
+        request.args
+      ]).toArray().then((playlists) => {
+        self.postMessage(new WorkerResponse(request.uuid, playlists));
+      });
+
     case ClientRequestCommand.CREATE_PLAYLIST:
       return db.playlists.add(request.args).then((id) => {
         self.postMessage(new WorkerResponse(request.uuid, id));
