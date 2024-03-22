@@ -1,9 +1,9 @@
-import { ClientRequestGetSong } from "./ClientRequestGetSong";
-import { ClientRequestListSongs } from "./ClientRequestListSongs";
-import { ClientRequestSearchSongs } from "./ClientRequestSearchSongs";
+import { ReqGetSong } from "./ReqGetSong";
+import { ReqListSongs } from "./ReqListSongs";
+import { ReqSearchSongs } from "./ReqSearchSongs";
 
 export {
-  ClientRequestGetSong,
-  ClientRequestListSongs,
-  ClientRequestSearchSongs
+  ReqGetSong,
+  ReqListSongs,
+  ReqSearchSongs
 };

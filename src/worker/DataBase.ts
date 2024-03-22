@@ -4,7 +4,7 @@ import type { ISong } from '@/lib/songs/model/ISong';
 import type { IPlaylist } from '@/lib/playlists/model/IPlaylist';
 
 export class DataBase extends Dexie {
-  songs: Dexie.Table<ISong, number>;
+  songs: Dexie.Table<ISong, string>;
   playlists: Dexie.Table<IPlaylist, number>;
   settings: Dexie.Table<any, string>;
 

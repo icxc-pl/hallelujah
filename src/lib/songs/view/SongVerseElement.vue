@@ -17,8 +17,9 @@ defineProps({
   <table class="song-verse">
     <tr v-for="line in verse.lines"
       :key="line.uuid">
-      <td>{{ line.text }}</td>
       <td v-if="options.showChords">{{ line.chord }}</td>
+      <td>{{ line.text }}</td>
+      
     </tr>
   </table>
 </template>
@@ -30,6 +31,13 @@ defineProps({
 
   td {
     font-size: 110%;
+
+    // &:first-child {
+    //   width: 30%;
+    //   white-space: nowrap;
+    //   text-align: right;
+    //   padding-right: 1rem;
+    // }
   }
 }
 </style>

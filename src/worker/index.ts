@@ -2,8 +2,9 @@
 import { SongImporter } from '@/lib/songs/SongImporter';
 import { DataBase } from './DataBase';
 import { fetchSongsFile, fetchLastModified } from './fetch';
-import { ClientRequestCommand, type ClientRequest } from '@/lib/requests';
+import { ReqCommand, type Req } from '@/lib/requests';
 import { WorkerResponse } from '@/lib/responses';
+import type { IPlaylist } from '@/lib/playlists/model';
 
 console.info("Worker is running");
 const db = new DataBase();
@@ -58,72 +59,110 @@ db.open();
 
 self.onmessage = (event: MessageEvent) => {
   console.log("[Worker] otrzymałem wiadomość", event.data);
-  const request: ClientRequest = event.data;
+  const request: Req = event.data;
   
   switch (request.command) {
-    case ClientRequestCommand.GET_SONG:
+
+    //#region ----------------- Songs -----------------
+
+    case ReqCommand.GET_SONG:
       return db.songs.get(request.args).then((song) => {
         self.postMessage(new WorkerResponse(request.uuid, song));
       });
     
-    case ClientRequestCommand.LIST_SONGS:
+    case ReqCommand.LIST_SONGS:
       return db.songs.toArray().then((songs) => {
         self.postMessage(new WorkerResponse(request.uuid, songs));
       });
 
-    case ClientRequestCommand.SEARCH_SONGS:
+    case ReqCommand.SEARCH_SONGS:
       return db.songs.where('normalizedTitle').startsWithAnyOfIgnoreCase(request.args).toArray().then((songs) => {
         self.postMessage(new WorkerResponse(request.uuid, songs));
       });
 
-    case ClientRequestCommand.GET_PLAYLIST:
+    //#endregion
+
+    //#region ----------------- Playlist -----------------
+
+    case ReqCommand.GET_PLAYLIST:
       return db.playlists.get(request.args).then((playlist) => {
         self.postMessage(new WorkerResponse(request.uuid, playlist));
       });
 
-    case ClientRequestCommand.LIST_PLAYLIST_SONGS:
-      return db.playlists.get(request.args).then((playlist) => {
-        if (playlist == null) {
-          self.postMessage(new WorkerResponse(request.uuid, 'ERR! Playlist not found'));
-          return;
-        }
-
-        if (playlist.songsHashes.length === 0) {
-          self.postMessage(new WorkerResponse(request.uuid, []));
-          return;
-        }
-
-        return db.songs.where('hash').anyOf(playlist.songsHashes).toArray().then((songs) => {
-          self.postMessage(new WorkerResponse(request.uuid, songs));
-        });
-      });
-    
-    case ClientRequestCommand.LIST_PLAYLISTS:
-      return db.playlists.toArray().then((playlists) => {
-        self.postMessage(new WorkerResponse(request.uuid, playlists));
-      });
-
-    case ClientRequestCommand.LIST_PLAYLISTS_WITHOUT_SONG:
-      return db.playlists.where('songsHashes').noneOf([
-        request.args
-      ]).toArray().then((playlists) => {
-        self.postMessage(new WorkerResponse(request.uuid, playlists));
-      });
-
-    case ClientRequestCommand.CREATE_PLAYLIST:
+    case ReqCommand.CREATE_PLAYLIST:
       return db.playlists.add(request.args).then((id) => {
         self.postMessage(new WorkerResponse(request.uuid, id));
       });
 
-    case ClientRequestCommand.DELETE_PLAYLIST:
+    case ReqCommand.DELETE_PLAYLIST:
       return db.playlists.delete(request.args).then(() => {
         self.postMessage(new WorkerResponse(request.uuid, true));
       });
 
-    case ClientRequestCommand.UPDATE_PLAYLIST:
+    case ReqCommand.UPDATE_PLAYLIST:
       return db.playlists.update(request.args.id, request.args).then(() => {
         self.postMessage(new WorkerResponse(request.uuid, true));
       });
+    
+    case ReqCommand.LIST_PLAYLISTS:
+      return db.playlists.toArray().then((playlists) => {
+        self.postMessage(new WorkerResponse(request.uuid, playlists));
+      });
+
+    case ReqCommand.LIST_PLAYLISTS_WITHOUT_SONG:
+      return db.playlists.where('songsHashes').noneOf([ [request.args] ]).toArray().then((playlists) => {
+        self.postMessage(new WorkerResponse(request.uuid, playlists));
+      });
+
+    //#endregion
+
+    //#region ----------------- Playlist's songs -----------------
+
+    case ReqCommand.LIST_PLAYLIST_SONGS:
+      return db.transaction('r', db.playlists, db.songs, async () => {
+        const playlist = await db.playlists.get(request.args);
+        
+        let response: any = [];
+
+        if (playlist == null) {
+          response = 'ERR! Playlist not found';
+
+        } else if (playlist.songsHashes.length === 0) {
+          // nothing to do
+
+        } else {
+          for (let i = 0; i < playlist.songsHashes.length; i++) {  
+            const song = await db.songs.get(playlist.songsHashes[i]);
+            if (song) response.push(song);
+          }
+        }
+
+        self.postMessage(new WorkerResponse(request.uuid, response));
+      });
+
+    case ReqCommand.ADD_SONG_TO_PLAYLIST:
+      return db.transaction('rw', db.playlists, async () => {
+        const playlist = await db.playlists.get(request.args[0]);
+
+        let response: any;
+
+        if (playlist == null || playlist.id == null) {
+          response = 'ERR! Playlist not found';
+
+        } else if (playlist.songsHashes.includes(request.args[1])) {
+          response = 'ERR! Song already in playlist';
+
+        } else {
+          playlist.songsHashes.push(request.args[1]);
+          db.playlists.update(playlist.id, { songsHashes: playlist.songsHashes });
+          response = playlist;
+
+        }
+
+        self.postMessage(new WorkerResponse(request.uuid, response));
+      });
+
+    //#endregion
 
     default:
       self.postMessage(new WorkerResponse(request.uuid, 'ERR! Unknown command'));

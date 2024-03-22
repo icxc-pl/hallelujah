@@ -1,10 +1,10 @@
-import { ClientRequest } from "./requests/ClientRequest";
+import { Req } from "./requests/Req";
 
 import type { ISong } from "./songs/model/ISong";
-import { ClientRequestListSongs, ClientRequestSearchSongs, ClientRequestGetSong } from "./songs/requests";
+import { ReqListSongs, ReqSearchSongs, ReqGetSong } from "./songs/requests";
 
 import type { IPlaylist } from "./playlists/model/IPlaylist";
-import { ClientRequestListPlaylists, ClientRequestListPlaylistsWithoutSong, ClientRequestGetPlaylist, ClientRequestCreatePlaylist, ClientRequestDeletePlaylist, ClientRequestUpdatePlaylist, ClientRequestListPlaylistSongs } from "./playlists/requests";
+import { ReqListPlaylists, ReqListPlaylistsWithoutSong, ReqGetPlaylist, ReqCreatePlaylist, ReqDeletePlaylist, ReqUpdatePlaylist, ReqListPlaylistSongs, ReqAddSongToPlaylist } from "./playlists/requests";
 
 import type { WorkerResponse } from "./responses/WorkerResponse";
 
@@ -46,10 +46,10 @@ worker.onmessage = (event) => {
 
 /**
  * Post request to worker
- * @param request ClientRequest
+ * @param request Req
  * @returns Promise<Object>
  */
-function post(request: ClientRequest): Promise<Object> {
+function post(request: Req): Promise<Object> {
   const promise = new Promise<Object>((resolve, reject) => {
     requests.set(request.uuid, [resolve, reject]);
   });
@@ -57,21 +57,7 @@ function post(request: ClientRequest): Promise<Object> {
   return promise;
 }
 
-/**
- * Get songs list
- * @returns Promise<Array<ISong>>
- */
-export function getSongsList(): Promise<Array<ISong>> {
-  return post(new ClientRequestListSongs()) as Promise<Array<ISong>>;
-}
-
-/**
- * Search songs
- * @returns Promise<Array<ISong>>
- */
-export function searchSongs(query: string): Promise<Array<ISong>> {
-  return post(new ClientRequestSearchSongs(query)) as Promise<Array<ISong>>;
-}
+//#region ----------------- Songs -----------------
 
 /**
  * Get song
@@ -79,24 +65,28 @@ export function searchSongs(query: string): Promise<Array<ISong>> {
  * @returns Promise<ISong>
  */
 export function getSong(hash: string): Promise<ISong> {
-  return post(new ClientRequestGetSong(hash)) as Promise<ISong>;
+  return post(new ReqGetSong(hash)) as Promise<ISong>;
 }
 
 /**
- * Get playlists list
- * @returns Promise<Array<IPlaylist>>
+ * Get songs list
+ * @returns Promise<Array<ISong>>
  */
-export function getPlaylistsList(): Promise<Array<IPlaylist>> {
-  return post(new ClientRequestListPlaylists()) as Promise<Array<IPlaylist>>;
+export function getSongsList(): Promise<Array<ISong>> {
+  return post(new ReqListSongs()) as Promise<Array<ISong>>;
 }
 
 /**
- * Get playlists list without song
- * @returns Promise<Array<IPlaylist>>
+ * Search songs
+ * @returns Promise<Array<ISong>>
  */
-export function getPlaylistsListWithoutSong(hash: string): Promise<Array<IPlaylist>> {
-  return post(new ClientRequestListPlaylistsWithoutSong(hash)) as Promise<Array<IPlaylist>>;
+export function searchSongs(query: string): Promise<Array<ISong>> {
+  return post(new ReqSearchSongs(query)) as Promise<Array<ISong>>;
 }
+
+//#endregion
+
+//#region ----------------- Playlist -----------------
 
 /**
  * Get playlist
@@ -104,18 +94,8 @@ export function getPlaylistsListWithoutSong(hash: string): Promise<Array<IPlayli
  * @returns Promise<IPlaylist>
  */
 export function getPlaylist(id: number): Promise<IPlaylist> {
-  return post(new ClientRequestGetPlaylist(id)) as Promise<IPlaylist>;
+  return post(new ReqGetPlaylist(id)) as Promise<IPlaylist>;
 }
-
-/**
- * Get playlist's songs
- * @param id number
- * @returns Promise<ISong[]>
- */
-export function getPlaylistSongs(id: number): Promise<ISong[]> {
-  return post(new ClientRequestListPlaylistSongs(id)) as Promise<ISong[]>;
-}
-
 
 /**
  * Create playlist
@@ -123,25 +103,66 @@ export function getPlaylistSongs(id: number): Promise<ISong[]> {
  * @returns Promise<IPlaylist>
  */
 export async function createPlaylist(playlist: IPlaylist): Promise<IPlaylist> {
-   const id = (await post(new ClientRequestCreatePlaylist(playlist))) as number;
-   playlist.id = id;
-   return playlist;
+  const id = (await post(new ReqCreatePlaylist(playlist))) as number;
+  playlist.id = id;
+  return playlist;
 }
 
 /**
- * Update playlist
- * @param playlist IPlaylist
- * @returns Promise<IPlaylist>
- */
+* Update playlist
+* @param playlist IPlaylist
+* @returns Promise<IPlaylist>
+*/
 export function deletePlaylist(id: number): Promise<boolean> {
-  return post(new ClientRequestDeletePlaylist(id)) as Promise<boolean>;
+ return post(new ReqDeletePlaylist(id)) as Promise<boolean>;
 }
 
 /**
- * Update playlist
- * @param playlist IPlaylist
- * @returns Promise<IPlaylist>
- */
+* Update playlist
+* @param playlist IPlaylist
+* @returns Promise<IPlaylist>
+*/
 export function updatePlaylist(playlist: IPlaylist): Promise<IPlaylist> {
-  return post(new ClientRequestUpdatePlaylist(playlist)) as Promise<IPlaylist>;
+ return post(new ReqUpdatePlaylist(playlist)) as Promise<IPlaylist>;
 }
+
+/**
+ * Get playlists list
+ * @returns Promise<Array<IPlaylist>>
+ */
+export function getPlaylistsList(): Promise<Array<IPlaylist>> {
+  return post(new ReqListPlaylists()) as Promise<Array<IPlaylist>>;
+}
+
+/**
+ * Get playlists list without song
+ * @returns Promise<Array<IPlaylist>>
+ */
+export function getPlaylistsListWithoutSong(hash: string): Promise<Array<IPlaylist>> {
+  return post(new ReqListPlaylistsWithoutSong(hash)) as Promise<Array<IPlaylist>>;
+}
+
+//#endregion
+
+//#region ----------------- Playlist's songs -----------------
+
+/**
+ * Get playlist's songs
+ * @param id number
+ * @returns Promise<ISong[]>
+ */
+export function getPlaylistSongs(id: number): Promise<ISong[]> {
+  return post(new ReqListPlaylistSongs(id)) as Promise<ISong[]>;
+}
+
+/**
+ * Add song to playlist
+ * @param playlistId number
+ * @param songHash string
+ * @returns Promise<void>
+ */
+export function addSongToPlaylist(playlistId: number, songHash: string): Promise<IPlaylist> {
+  return post(new ReqAddSongToPlaylist(playlistId, songHash)) as Promise<IPlaylist>;
+}
+
+//#endregion

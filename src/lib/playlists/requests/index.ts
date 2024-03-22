@@ -1,16 +1,25 @@
-import { ClientRequestGetPlaylist } from "./ClientRequestGetPlaylist";
-import { ClientRequestListPlaylistSongs } from "./ClientRequestListPlaylistSongs";
-import { ClientRequestListPlaylists, ClientRequestListPlaylistsWithoutSong } from "./ClientRequestListPlaylists";
-import { ClientRequestCreatePlaylist } from "./ClientRequestCreatePlaylist";
-import { ClientRequestDeletePlaylist } from "./ClientRequestDeletePlaylist";
-import { ClientRequestUpdatePlaylist } from "./ClientRequestUpdatePlaylist";
+import { ReqGetPlaylist } from "./ReqGetPlaylist";
+import { ReqCreatePlaylist } from "./ReqCreatePlaylist";
+import { ReqDeletePlaylist } from "./ReqDeletePlaylist";
+import { ReqUpdatePlaylist } from "./ReqUpdatePlaylist";
+
+import { ReqListPlaylistSongs } from "./ReqListPlaylistSongs";
+import { ReqAddSongToPlaylist } from "./ReqAddSongToPlaylist";
+import { ReqRemoveSongFromPlaylist } from "./ReqRemoveSongFromPlaylist";
+
+import { ReqListPlaylists } from "./ReqListPlaylists";
+import { ReqListPlaylistsWithoutSong } from "./ReqListPlaylistsWithoutSong";
 
 export {
-  ClientRequestGetPlaylist,
-  ClientRequestListPlaylistSongs,
-  ClientRequestListPlaylists,
-  ClientRequestListPlaylistsWithoutSong,
-  ClientRequestCreatePlaylist,
-  ClientRequestDeletePlaylist,
-  ClientRequestUpdatePlaylist
+  ReqGetPlaylist,
+  ReqCreatePlaylist,
+  ReqDeletePlaylist,
+  ReqUpdatePlaylist,
+
+  ReqListPlaylistSongs,
+  ReqAddSongToPlaylist,
+  ReqRemoveSongFromPlaylist,
+
+  ReqListPlaylists,
+  ReqListPlaylistsWithoutSong
 };

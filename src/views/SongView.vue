@@ -14,7 +14,7 @@ import SelectModal from '@/components/modals/SelectModal.vue';
 import { DataContainer } from '@/lib/vue/DataContainer';
 import { SelectOption } from '@/lib/vue/SelectOption';
 
-import { getSong, getPlaylist, getPlaylistsListWithoutSong, updatePlaylist } from '@/lib/client';
+import { getSong, getPlaylist, getPlaylistsListWithoutSong, addSongToPlaylist } from '@/lib/client';
 import SongVersesList from '@/lib/songs/view/SongVersesList.vue';
 import SongMetaContainer from '@/lib/songs/view/SongMetaContainer.vue';
 import { type ISong } from '@/lib/songs/model';
@@ -132,9 +132,11 @@ async function onSubmitChoosePlaylist(id: string) {
     throw new Error("Nie wybrano playlisty. Aby dodać playlistę, przejdź do zakładki 'Playlisty' i naciśnij plusik w górnym prawym rogu.");
   }
 
-  const playlist = await getPlaylist(parseInt(id));
-  playlist.songsHashes.push(hash.value);
-  await updatePlaylist(playlist);
+  try {
+    await addSongToPlaylist(parseInt(id), hash.value);
+  } catch (e) {
+    alert(e);
+  }  
 }
 
 //#endregion

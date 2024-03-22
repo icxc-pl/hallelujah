@@ -1,7 +1,7 @@
-import { ClientRequest } from "./ClientRequest";
-import { ClientRequestCommand } from "./ClientRequestCommand";
+import { Req } from "./Req";
+import { ReqCommand } from "./ReqCommand";
 
 export {
-  ClientRequest,
-  ClientRequestCommand
+  Req,
+  ReqCommand
 };
