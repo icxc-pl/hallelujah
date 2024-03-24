@@ -11,6 +11,7 @@ import { DataContainer } from '@/lib/vue/DataContainer';
 import ViewLayout from '@/components/ViewLayout.vue';
 import PromptModal from '@/components/modals/PromptModal.vue';
 import IconButton from '@/components/elements/IconButton.vue';
+import InfoScreen from '@/components/elements/InfoScreen.vue';
 
 const container: DataContainer = reactive(new DataContainer());
 
@@ -97,9 +98,10 @@ refresh();
           @itemdeleted="whenPlaylistDeleted"
           @itemcreated="whenPlaylistCreated" />
         
-        <p v-else>
-          Nie masz jeszcze żadnej Playlisty. Kliknij na plusik do góry, aby dodać nową.
-        </p>
+        <InfoScreen v-else
+          icon="InfoWithCircle"
+          title="Brak Playlist"
+          text="Nie masz jeszcze żadnej Playlisty. Kliknij na plusik do góry, aby dodać nową." />
       </template>
     </template>
 
@@ -107,18 +109,5 @@ refresh();
 </template>
 
 <style lang="less">
-// div {
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   grid-template-rows: 3rem 1fr;
-//   grid-template-areas: 'search-bar' 'song-list';
 
-//   form {
-//     grid-area: search-bar;
-//   }
-
-//   ul {
-//     grid-area: song-list;
-//   }
-// }
 </style>

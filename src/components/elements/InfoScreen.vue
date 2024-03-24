@@ -40,11 +40,16 @@ const props = defineProps({
 
   h1 {
     margin-bottom: 0;
+    font-size: 1.75rem;
+  }
+
+  p {
+    font-size: 1.1rem;
   }
 
   svg {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     margin: 0 auto;
   }
 }
