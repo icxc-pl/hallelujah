@@ -18,11 +18,11 @@ function s2b(val: string) {
 
 const functionsShowChords = computed({
   get() {
-    return b2s(options.showChords.value);
+    return options.showChords.value.toString();
   },
 
   set(v: string) {
-    options.showChords.value = s2b(v);
+    options.showChords.value = parseInt(v);
   }
 });
 
@@ -46,7 +46,8 @@ const functionsShowLeaderTools = computed({
           <label for="function-show-chords">Akordy</label>
           <select id="function-show-chords" v-model="functionsShowChords">
             <option value="0">Ukryj</option>
-            <option value="1">Pokaż</option>
+            <option value="-1">Po lewej</option>
+            <option value="1">Po prawej</option>
           </select>
         </li>
         <li>

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 export const useOptionsStore = defineStore('options', {
   state: () => {
-    const showChords = ref(false);
+    const showChords = ref(0);
     const showLeaderTools = ref(false);
 
     return {

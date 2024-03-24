@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useOptionsStore } from '@/stores/options';
 import type { PropType } from 'vue';
 import type { ISongVerse } from '../model';
@@ -11,15 +12,19 @@ defineProps({
     required: true
   }
 });
+
+const showChordsOnLeft = computed(() => options.showChords === -1);
+const showChordsOnRight = computed(() => options.showChords === 1);
+
 </script>
 
 <template>
   <table class="song-verse">
     <tr v-for="line in verse.lines"
       :key="line.uuid">
-      <td v-if="options.showChords">{{ line.chord }}</td>
+      <td class="chord" v-if="showChordsOnLeft">{{ line.chord }}</td>
       <td>{{ line.text }}</td>
-      
+      <td class="chord" v-if="showChordsOnRight">{{ line.chord }}</td>
     </tr>
   </table>
 </template>
@@ -32,12 +37,21 @@ defineProps({
   td {
     font-size: 110%;
 
-    // &:first-child {
-    //   width: 30%;
-    //   white-space: nowrap;
-    //   text-align: right;
-    //   padding-right: 1rem;
-    // }
+   &.chord {
+    width: 20%;
+    min-width: 7rem;
+    color: var(--color-inferior-text);
+
+    &:first-child {
+      text-align: right;
+      padding-right: 1rem;
+    }
+
+    &:last-child {
+      text-align: left;
+      padding-left: 1rem;
+    }
+   }
   }
 }
 </style>
