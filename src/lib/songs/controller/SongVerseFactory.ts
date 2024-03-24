@@ -18,11 +18,11 @@ export class SongVerseFactory implements ISongVerse {
   }
 
   get(): ISongVerse {
-    return createSongVerse(this.lines);
+    return createSongVerseObject(this.lines);
   }
 }
 
-export function createSongVerse(lines: IVerseLine[]): ISongVerse {
+export function createSongVerseObject(lines: IVerseLine[]): ISongVerse {
   return {
     uuid: uuid(),
     lines

@@ -6,11 +6,11 @@ const SEPARATOR: string = ' | ';
 export class VerseLineFactory {
   static fromLine(line: string): IVerseLine {
     const parts: string[] = line.split(SEPARATOR);
-    return createVerseLine(parts[0], parts[1]);
+    return createVerseLineObject(parts[0], parts[1]);
   }
 }
 
-export function createVerseLine(text: string, chord: string): IVerseLine {
+export function createVerseLineObject(text: string, chord: string): IVerseLine {
   return {
     uuid: uuid(),
     text,

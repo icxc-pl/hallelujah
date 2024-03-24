@@ -54,11 +54,11 @@ export class SongFactory implements ISong {
   }
 
   get(): ISong {
-    return createSong(this.title, this.meta.get(), this.verses);
+    return createSongObject(this.title, this.meta.get(), this.verses);
   }
 }
 
-export function createSong(title: string, meta: ISongMeta, verses: ISongVerse[]): ISong {
+export function createSongObject(title: string, meta: ISongMeta, verses: ISongVerse[]): ISong {
   const searchText = [
     title,
     verses.map((verse) => verse.lines.map((line) => line.text).join("\n")).join("\n"),
