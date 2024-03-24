@@ -94,19 +94,22 @@ const contentClass = computed((): string[] => {
 #content {
   overflow: auto;
 
-  &.is-loading {
+  &.content-loading {
     height: 100%;
     position: relative;
+
+    @size: 3rem;
 
     &::after {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 3rem;
-      height: 3rem;
+      top: calc(50% ~"-" @size/2);
+      left: calc(50% ~"-" @size/2);
+      width: @size;
+      height: @size;
       border: 0.5rem solid var(--color-link);
       border-radius: 3px;
+      opacity: 0.25;
       animation: spinner 3s infinite;
     }
   }
