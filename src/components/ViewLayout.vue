@@ -93,6 +93,7 @@ const contentClass = computed((): string[] => {
 
 #content {
   overflow: auto;
+  position: relative;
 
   &.content-loading {
     height: 100%;

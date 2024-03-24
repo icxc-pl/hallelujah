@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, shallowReactive } from 'vue';
+import { shallowReactive, computed } from 'vue';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import { type ISong } from '@/lib/songs/model/ISong';
@@ -7,12 +7,25 @@ import { getSongsList, searchSongs } from '@/lib/client';
 
 import ViewLayout from '@/components/ViewLayout.vue';
 import SearchInput from '@/components/elements/SearchInput.vue';
+import InfoScreen from '@/components/elements/InfoScreen.vue';
 import SongsList from '@/lib/songs/view/SongsList.vue';
 
 const container: DataContainer = shallowReactive(new DataContainer());
 const searching = shallowReactive({
   active: false,
   phrase: ''
+});
+
+const areSongs = computed(() => {
+  return (container.data as Array<ISong>).length > 0;
+});
+
+const noSongsScreenTitle = computed(() => {
+  return searching.active ? 'Nie znaleziono' : 'Brak piosenek';
+});
+
+const noSongsScreenText = computed(() => {
+  return searching.active ? 'W śpiewniku nie ma żadnej piosenki pasującej do szukanej frazy' : 'Wygląda na to, że nie ma żadnych piosenek w bazie';
 });
 
 function handleSearch(phrase: string) {
@@ -60,10 +73,14 @@ getWholeList();
     </template>
 
     <template #content>
-        <SongsList
+        <SongsList v-if="areSongs"
           :songs="(container.data as Array<ISong>)"
           :searching-active="searching.active"
           :searching-phrase="searching.phrase" />
+        <InfoScreen v-else
+          icon="EmojiSad"
+          :title="noSongsScreenTitle"
+          :text="noSongsScreenText" />
     </template>
 
   </ViewLayout>
