@@ -220,7 +220,7 @@ li.playlists-list-element {
 
     strong {
       display: block;
-      font-size: 1.1em;
+      font-size: 1.1rem;
     }
   }
 

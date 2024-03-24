@@ -26,10 +26,6 @@ const isAuthor = computed((): boolean => {
   return props.song.meta.author != null;
 });
 
-const shouldRenderDl = computed((): boolean => {
-  return isAuthor.value || props.searchingActive;
-});
-
 const getOccurrence = computed((): string => {
   const regex = new RegExp(props.searchingPhrase, 'ig');
   const lines = props.song.searchText.split("\n");
@@ -71,16 +67,13 @@ const getOccurrence = computed((): string => {
   <li class="song-list-element">
     <RouterLink :to="link">
       <strong>{{ song.title }}</strong>
-      <dl v-if="shouldRenderDl">
-        <template v-if="searchingActive">
-          <dt>Znalezione wystąpienie</dt>
-          <dd v-html="getOccurrence"></dd>
-        </template>
-        <template v-else-if="isAuthor">
-          <dt>Author</dt>
-          <dd>{{ song.meta.author }}</dd>
-        </template>
-      </dl>
+      <span v-if="searchingActive"
+        class="subtext"
+        title="Znalezione wystąpienie"
+        v-html="getOccurrence"></span>
+      <span v-else-if="isAuthor"
+        class="subtext"
+        title="Autor">{{ song.meta.author }}</span>
     </RouterLink>
   </li>
 </template>
@@ -99,20 +92,13 @@ li.song-list-element {
 
     strong {
       display: block;
-      font-size: 1.1em;
+      font-size: 1.1rem;
     }
 
-    dl {
+    span.subtext {
+      display: block;
+      font-size: 0.9rem;
       color: var(--color-inferior-text);
-      margin-block: 0;
-
-      dt {
-        position: absolute !important;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-        clip: rect(1px, 1px, 1px, 1px);
-      }
     }
 
     &::after {

@@ -1,11 +1,27 @@
 @font-face {
-  font-family: 'fira_sans';
-  src: local('Fira Sans'),
-       local('FiraSans'),
-       local('Fira Sans Regular'),
-       local('FiraSans-Regular'),
-       url('firasans-regular.woff2') format('woff2'),
-       url('firasans-regular.woff') format('woff');
+  font-family: 'fs';
+  src: url('fs-b.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'fs';
+  src: url('fs-bi.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'fs';
+  src: url('fs-m.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'fs';
+  src: url('fs-mi.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
 }
