@@ -2,7 +2,6 @@ import { HASH, SPACE, GT } from '@/common/constants';
 import { SongMetaFactory } from './SongMetaFactory';
 import { SongVerseFactory } from './SongVerseFactory';
 import { type ISong, type ISongMeta, type ISongVerse } from '../model';
-import { normalizeText } from '@/common/helpers';
 import { blake2bHex } from 'blakejs';
 
 const BEGINING: string = HASH + HASH + SPACE;
@@ -15,18 +14,18 @@ export class SongFactory implements ISong {
 
   hash: string;
   title: string;
-  normalizedTitle: string;
   meta: SongMetaFactory;
   verses: ISongVerse[];
+  searchText: string;
 
   currentVerse?: SongVerseFactory;
 
   constructor(title: string) {
     this.hash = "";
     this.title = title.substring(BEGINING.length);
-    this.normalizedTitle = "";
     this.meta = new SongMetaFactory();
     this.verses = [];
+    this.searchText = "";
 
     this.currentVerse = undefined;
   }
@@ -60,11 +59,17 @@ export class SongFactory implements ISong {
 }
 
 export function createSong(title: string, meta: ISongMeta, verses: ISongVerse[]): ISong {
+  const searchText = [
+    title,
+    verses.map((verse) => verse.lines.map((line) => line.text).join("\n")).join("\n"),
+    Object.values(meta).join("\n").replace(/ ?\[object Object\] ?/, " ")
+  ].join("\n");
+  // console.log(searchText);
   return {
     hash: blake2bHex(title, undefined, 4),
     title,
-    normalizedTitle: normalizeText(title),
-    meta: meta,
-    verses: verses
+    meta,
+    verses,
+    searchText
   };
 }

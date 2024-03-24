@@ -6,6 +6,14 @@ defineProps({
   songs: {
     type: Array<ISong>,
     required: true
+  },
+  searchingActive: {
+    type: Boolean,
+    default: false
+  },
+  searchingPhrase: {
+    type: String,
+    default: ''
   }
 });
 </script>
@@ -14,7 +22,9 @@ defineProps({
   <ul>
     <SongsListElement v-for="song in songs"
       :key="song.hash"
-      :song="song" />
+      :song="song"
+      :searching-active="searchingActive"
+      :searching-phrase="searchingPhrase" />
   </ul>
 </template>
 

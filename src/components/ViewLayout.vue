@@ -6,8 +6,7 @@ const router = useRoute();
 
 const props = defineProps({
   title: {
-    type: String,
-    default: ""
+    type: String
   },
   loadingEnabled: {
     type: Boolean,
@@ -23,8 +22,8 @@ const shouldShow = computed((): boolean => {
   return !props.loadingEnabled || !props.loadingState;
 });
 
-const viewTitle = computed((): string => {
-  return shouldShow.value ? props.title : "Ładowanie...";
+const hasTitle = computed((): boolean => {
+  return props.title != null;
 });
 
 const contentClass = computed((): string[] => {
@@ -47,9 +46,9 @@ const contentClass = computed((): string[] => {
 </script>
 
 <template>
-  <div id="toolbar">
-    <h1>{{ viewTitle }}</h1>
-    <slot v-if="shouldShow" name="toolbar"></slot>
+  <div id="toolbar" :data-show-elements="shouldShow">
+    <h1 v-if="hasTitle">{{ shouldShow ? props.title : "Ładowanie..." }}</h1>
+    <slot name="toolbar"></slot>
   </div>
   <div id="content" :class="contentClass">
     <slot v-if="shouldShow" name="content"></slot>
@@ -61,6 +60,12 @@ const contentClass = computed((): string[] => {
   background: #f7f7f7;
   display: flex;
   justify-content: flex-end;
+
+  &[data-show-elements="false"] {
+    .icon-button {
+      visibility: hidden;
+    }
+  }
 
   & > * {
     flex-shrink: 0;
@@ -79,6 +84,10 @@ const contentClass = computed((): string[] => {
     margin: 0;
     width: 3rem;
     height: 3rem;
+  }
+
+  form.search-input {
+    flex-basis: 100%;
   }
 }
 

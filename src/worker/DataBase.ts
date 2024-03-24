@@ -12,7 +12,7 @@ export class DataBase extends Dexie {
     super("DataBase");
 
     this.version(1).stores({
-      songs: "hash, &title, normalizedTitle, meta, verses",
+      songs: "hash, &title, meta, verses, searchText",
       playlists: "++id, &name, color, songsHashes",
       settings: "key, value"
     });

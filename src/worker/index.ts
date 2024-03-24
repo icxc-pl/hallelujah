@@ -9,7 +9,6 @@ import type { IPlaylist } from '@/lib/playlists/model';
 console.info("Worker is running");
 const db = new DataBase();
 
-
 function fetchSongs() {
   return fetchSongsFile().then((res) => {
     const importer = new SongImporter();
@@ -71,12 +70,16 @@ self.onmessage = (event: MessageEvent) => {
       });
     
     case ReqCommand.LIST_SONGS:
-      return db.songs.toArray().then((songs) => {
+      return db.songs.orderBy("title").toArray().then((songs) => {
         self.postMessage(new WorkerResponse(request.uuid, songs));
       });
 
     case ReqCommand.SEARCH_SONGS:
-      return db.songs.where('normalizedTitle').startsWithAnyOfIgnoreCase(request.args).toArray().then((songs) => {
+      //eslint-disable-next-line
+      const r = new RegExp(request.args, 'i')
+      return db.songs.filter((song) => {
+        return song.searchText.match(r) != null;
+      }).sortBy("title").then((songs) => {
         self.postMessage(new WorkerResponse(request.uuid, songs));
       });
 
@@ -154,6 +157,28 @@ self.onmessage = (event: MessageEvent) => {
 
         } else {
           playlist.songsHashes.push(request.args[1]);
+          db.playlists.update(playlist.id, { songsHashes: playlist.songsHashes });
+          response = playlist;
+
+        }
+
+        self.postMessage(new WorkerResponse(request.uuid, response));
+      });
+
+    case ReqCommand.REMOVE_SONG_FROM_PLAYLIST:
+      return db.transaction('rw', db.playlists, async () => {
+        const playlist = await db.playlists.get(request.args[0]);
+
+        let response: any;
+
+        if (playlist == null || playlist.id == null) {
+          response = 'ERR! Playlist not found';
+
+        } else if (!playlist.songsHashes.includes(request.args[1])) {
+          response = 'ERR! Song not in playlist';
+
+        } else {
+          playlist.songsHashes = playlist.songsHashes.filter((hash) => hash !== request.args[1]);
           db.playlists.update(playlist.id, { songsHashes: playlist.songsHashes });
           response = playlist;
 
