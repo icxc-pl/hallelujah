@@ -103,8 +103,17 @@ self.onmessage = (event: MessageEvent) => {
       });
 
     case ReqCommand.UPDATE_PLAYLIST:
-      return db.playlists.update(request.args.id, request.args).then(() => {
-        self.postMessage(new WorkerResponse(request.uuid, true));
+      return db.transaction('rw', db.playlists, async () => {
+        const count = await db.playlists.update(request.args[0], request.args[1]);
+
+        let response: any;
+        if (count === 0) {
+          response = 'ERR! Playlist not found';
+        } else {
+          response = await db.playlists.get(request.args[0]);
+        }
+
+        self.postMessage(new WorkerResponse(request.uuid, response));
       });
     
     case ReqCommand.LIST_PLAYLISTS:

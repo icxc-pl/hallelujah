@@ -122,8 +122,8 @@ export function deletePlaylist(id: number): Promise<boolean> {
 * @param playlist IPlaylist
 * @returns Promise<IPlaylist>
 */
-export function updatePlaylist(playlist: IPlaylist): Promise<IPlaylist> {
- return post(new ReqUpdatePlaylist(playlist)) as Promise<IPlaylist>;
+export function updatePlaylist(id: number, changes: Object): Promise<IPlaylist> {
+ return post(new ReqUpdatePlaylist(id, changes)) as Promise<IPlaylist>;
 }
 
 /**

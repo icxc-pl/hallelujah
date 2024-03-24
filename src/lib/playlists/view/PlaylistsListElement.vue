@@ -8,8 +8,9 @@ import MenuModal from '@/components/modals/MenuModal.vue';
 import PromptModal from '@/components/modals/PromptModal.vue';
 import ConfirmModal from '@/components/modals/ConfirmModal.vue';
 
-import { type IPlaylist, duplicatePlaylist } from '../model';
+import { type IPlaylist } from '../model';
 import { createPlaylist, updatePlaylist, deletePlaylist } from '@/lib/client';
+import { normalizePlaylistTitle, duplicatePlaylistObject } from '../controller/PlaylistFactory';
 
 const props = defineProps({
   playlist: {
@@ -89,15 +90,27 @@ function promptChangeName() {
  * @param val New name of the playlist
  */
 async function onSubmitChangeName(val: any) {
-  let updated: IPlaylist = duplicatePlaylist(props.playlist, val).toObject();
-  updated.id = props.playlist.id
-  await updatePlaylist(updated);
+  const newName = normalizePlaylistTitle(val)
+
+  if (props.playlist.id == null) {
+    return;
+  }
+
+  const updated = await updatePlaylist(props.playlist.id, {
+    name: newName
+  });
   promptChangeNameModal.patchOptions({
     // @ts-ignore
     attrs: {
       startValue: updated.name
     }
   });
+  promptDuplicateModal.patchOptions({
+    // @ts-ignore
+    attrs: {
+      startValue: updated.name + " Kopia"
+    }
+  })
   emit('updated', updated);
 }
 
@@ -170,7 +183,7 @@ function promptDuplicate() {
  * @param val New name of the playlist
  */
 async function onSubmitDuplicate(val: any) {
-  let duplicat: IPlaylist = duplicatePlaylist(props.playlist, val).toObject();
+  let duplicat: IPlaylist = duplicatePlaylistObject(props.playlist, val);
   await createPlaylist(duplicat);
   emit('created', duplicat);
 }

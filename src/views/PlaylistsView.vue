@@ -4,7 +4,8 @@ import { useModal } from 'vue-final-modal';
 // import SearchBar from '@/components/SearchBar.vue';
 import PlaylistsList from '@/lib/playlists/view/PlaylistsList.vue';
 import { getPlaylistsList, createPlaylist } from '@/lib/client';
-import { type IPlaylist, Playlist } from '@/lib/playlists/model';
+import { type IPlaylist } from '@/lib/playlists/model';
+import { createPlaylistObject } from '@/lib/playlists/controller/PlaylistFactory';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
@@ -35,7 +36,7 @@ const createPlaylistModal = useModal({
 
 async function submitCreatePlaylist(val: any) {
   let playlist: IPlaylist;
-  playlist = new Playlist(val);
+  playlist = createPlaylistObject(val);
   whenPlaylistCreated(await createPlaylist(playlist));
 }
 
