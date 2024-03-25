@@ -4,7 +4,9 @@ import type { ISong } from "./songs/model/ISong";
 import { ReqListSongs, ReqSearchSongs, ReqGetSong } from "./songs/requests";
 
 import type { IPlaylist } from "./playlists/model/IPlaylist";
-import { ReqListPlaylists, ReqListPlaylistsWithoutSong, ReqGetPlaylist, ReqCreatePlaylist, ReqDeletePlaylist, ReqUpdatePlaylist, ReqListPlaylistSongs, ReqAddSongToPlaylist } from "./playlists/requests";
+import { ReqListPlaylists, ReqListPlaylistsWithoutSong,
+  ReqGetPlaylist, ReqCreatePlaylist, ReqDeletePlaylist, ReqUpdatePlaylist,
+  ReqListPlaylistSongs, ReqAddSongToPlaylist, ReqRemoveSongFromPlaylist } from "./playlists/requests";
 
 import type { WorkerResponse } from "./responses/WorkerResponse";
 
@@ -163,6 +165,16 @@ export function getPlaylistSongs(id: number): Promise<ISong[]> {
  */
 export function addSongToPlaylist(playlistId: number, songHash: string): Promise<IPlaylist> {
   return post(new ReqAddSongToPlaylist(playlistId, songHash)) as Promise<IPlaylist>;
+}
+
+/**
+ * Remove song from playlist
+ * @param playlistId number
+ * @param songHash string
+ * @returns Promise<void>
+ */
+export function removeSongFromPlaylist(playlistId: number, songHash: string): Promise<IPlaylist> {
+  return post(new ReqRemoveSongFromPlaylist(playlistId, songHash)) as Promise<IPlaylist>;
 }
 
 //#endregion

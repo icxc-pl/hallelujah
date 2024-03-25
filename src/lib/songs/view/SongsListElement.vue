@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import '@/assets/components/SongsListElement.less';
+
 import { computed, type PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 import { type ISong } from '../model';
@@ -64,7 +66,7 @@ const getOccurrence = computed((): string => {
 </script>
 
 <template>
-  <li class="song-list-element">
+  <li class="songs-list-element">
     <RouterLink :to="link">
       <strong>{{ song.title }}</strong>
       <span v-if="searchingActive"
@@ -79,35 +81,4 @@ const getOccurrence = computed((): string => {
 </template>
 
 <style lang="less">
-li.song-list-element {
-  display: block;
-  overflow: auto;
-
-  a {
-    display: block;
-    color: var(--color-link);
-    text-decoration: none;
-    margin: var(--side-margin-h) var(--side-margin-v);
-    position: relative;
-
-    strong {
-      display: block;
-      font-size: 1.1rem;
-    }
-
-    span.subtext {
-      display: block;
-      font-size: 0.9rem;
-      color: var(--color-inferior-text);
-    }
-
-    &::after {
-      display: block;
-      content: '';
-      border-top: 2px solid var(--separator-color);
-      position: relative;
-      bottom: calc(-1 * var(--side-margin-h));
-    }
-  }
-}
 </style>

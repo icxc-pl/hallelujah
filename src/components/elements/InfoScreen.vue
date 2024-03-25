@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
 import EntypoIcon from './EntypoIcon.vue';
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true

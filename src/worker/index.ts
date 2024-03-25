@@ -188,9 +188,13 @@ self.onmessage = (event: MessageEvent) => {
 
         } else {
           playlist.songsHashes = playlist.songsHashes.filter((hash) => hash !== request.args[1]);
-          db.playlists.update(playlist.id, { songsHashes: playlist.songsHashes });
-          response = playlist;
-
+          const count = await db.playlists.update(playlist.id, { songsHashes: playlist.songsHashes });
+          
+          if (count === 0) {
+            response = 'ERR! Playlist not found';
+          } else {
+            response = playlist;
+          }
         }
 
         self.postMessage(new WorkerResponse(request.uuid, response));

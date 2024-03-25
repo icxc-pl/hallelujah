@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { onActivated, ref, type Ref, shallowReactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
-
-// import SearchBar from '@/components/SearchBar.vue';
-import SongsList from '@/lib/songs/view/SongsList.vue';
-import { getPlaylist, getPlaylistSongs } from '@/lib/client';
-import { type IPlaylist } from '@/lib/playlists/model';
-import { type ISong } from '@/lib/songs/model';
 import { DataContainer } from '@/lib/vue/DataContainer';
-
 import ViewLayout from '@/components/ViewLayout.vue';
+
+import { getPlaylist, getPlaylistSongs } from '@/lib/client';
+
+import { type IPlaylist, type IPlaylistSong } from '@/lib/playlists/model';
+import PlaylistSongsList from '@/lib/playlists/view/PlaylistSongsList.vue';
+
 
 const router = useRouter();
 const playlistId: Ref<number | null> = ref(-1);
@@ -29,7 +28,6 @@ const getTitle = computed(() => {
 function getCurrentIdFromUrl() {
   return parseInt(router.currentRoute.value.params.id as string);
 }
-
 
 onActivated(() => {
   playlistId.value = getCurrentIdFromUrl();
@@ -51,7 +49,18 @@ async function refresh() {
   }
 
   playlist.setData(p);
-  songs.setData(await getPlaylistSongs(p.id));
+  
+  const _songs = await getPlaylistSongs(p.id);
+  songs.setData(_songs.map((song) => {
+    return {
+      ...song,
+      played: false
+    } as IPlaylistSong;
+  }));
+}
+
+function whenSongRemoved(song: IPlaylistSong) {
+  songs.setData((songs.data as IPlaylistSong[]).filter((s) => s.hash !== song.hash));
 }
 
 </script>
@@ -64,8 +73,10 @@ async function refresh() {
 
     <template #content>
         <!-- <SearchBar @input="setSearch" /> -->
-        <SongsList
-          :songs="(songs.data as Array<ISong>)" />
+        <PlaylistSongsList
+          :playlist="(playlist.data as IPlaylist)"
+          :songs="(songs.data as IPlaylistSong[])"
+          @itemremoved="whenSongRemoved" />
     </template>
 
   </ViewLayout>

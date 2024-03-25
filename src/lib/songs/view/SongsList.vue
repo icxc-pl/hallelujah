@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import "@/assets/components/SongsList.less";
+
 import { type ISong } from '../model';
 import SongsListElement from './SongsListElement.vue';
 
@@ -19,7 +21,7 @@ defineProps({
 </script>
 
 <template>
-  <ul>
+  <ul class="songs-list">
     <SongsListElement v-for="song in songs"
       :key="song.hash"
       :song="song"
@@ -29,11 +31,4 @@ defineProps({
 </template>
 
 <style lang="less">
-  ul {
-    overflow: auto;
-    display: block;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 </style>
