@@ -66,7 +66,7 @@ self.onmessage = (event: MessageEvent) => {
 
     case ReqCommand.GET_SONG:
       return db.songs.get(request.args).then((song) => {
-        self.postMessage(new WorkerResponse(request.uuid, song));
+        self.postMessage(new WorkerResponse(request.uuid, typeof song === "undefined" ? null : song));
       });
     
     case ReqCommand.LIST_SONGS:

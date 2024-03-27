@@ -8,6 +8,7 @@ import { DataContainer } from '@/lib/vue/DataContainer';
 
 import { getSong } from '@/lib/client';
 import { type ISong } from '@/lib/songs/model';
+import { type IPlaylist } from '@/lib/playlists/model';
 import SongDetailsMenuButton from '@/lib/songs/view/SongDetailsMenuButton.vue';
 import SongDetails from '@/lib/songs/view/SongDetails.vue';
 
@@ -19,7 +20,7 @@ const container: DataContainer = shallowReactive(new DataContainer());
 /**
  * When the view is activated, load the song from the server
  */
- onActivated(() => {
+onActivated(() => {
   songHash.value = route.params.songHash as string;
   
   if (songHash.value == null) {
@@ -35,7 +36,7 @@ const container: DataContainer = shallowReactive(new DataContainer());
 /**
  * Compute Song
  */
- const song = computed((): ISong | null => {
+const song = computed((): ISong | null => {
   return container.data as ISong;
 });
 

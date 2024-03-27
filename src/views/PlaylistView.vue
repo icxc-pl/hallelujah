@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onActivated, ref, type Ref, shallowReactive, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
@@ -11,7 +11,7 @@ import { getPlaylist, getPlaylistSongs } from '@/lib/client';
 import { type IPlaylist, type IPlaylistSong } from '@/lib/playlists/model';
 import PlaylistSongsList from '@/lib/playlists/view/PlaylistSongsList.vue';
 
-const router = useRouter();
+const route = useRoute();
 const playlistId: Ref<number | null> = ref(-1);
 
 const playlist: DataContainer = shallowReactive(new DataContainer());
@@ -31,7 +31,7 @@ const getTitle = computed(() => {
 });
 
 function getCurrentIdFromUrl() {
-  return parseInt(router.currentRoute.value.params.id as string);
+  return parseInt(route.params.playlistId as string);
 }
 
 onActivated(() => {

@@ -5,13 +5,10 @@ import MenuItem from './MenuItem.vue';
 import { useStateStore } from '@/stores/state';
 
 const state = useStateStore();
-const { currentSongHash } = storeToRefs(state);
+const { lastSongPath } = storeToRefs(state);
 
 const songLink = computed((): string => {
-  if (currentSongHash.value == null) {
-    return '/';
-  }
-  return '/song/' + currentSongHash.value;
+  return lastSongPath.value == null ? '/' : lastSongPath.value;
 });
 </script>
 

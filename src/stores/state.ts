@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 export const useStateStore = defineStore('state', () => {
 
-  const currentSongHash: Ref<null | string> = ref(null);
+  const lastSongPath: Ref<null | string> = ref(null);
     
-  return { currentSongHash };
+  return { lastSongPath };
 });

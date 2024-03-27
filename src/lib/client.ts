@@ -66,8 +66,8 @@ function post(request: Req): Promise<Object> {
  * @param hash Song hash
  * @returns Promise<ISong>
  */
-export function getSong(hash: string): Promise<ISong> {
-  return post(new ReqGetSong(hash)) as Promise<ISong>;
+export function getSong(hash: string): Promise<ISong | null> {
+  return post(new ReqGetSong(hash)) as Promise<ISong | null>;
 }
 
 /**
