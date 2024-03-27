@@ -110,7 +110,7 @@ const contentClass = computed((): string[] => {
       height: @size;
       border: 0.5rem solid var(--color-link);
       border-radius: 3px;
-      opacity: 0.25;
+      opacity: 0.5;
       animation: spinner 3s infinite;
     }
   }

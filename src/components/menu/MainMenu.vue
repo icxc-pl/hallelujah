@@ -17,7 +17,7 @@ const songLink = computed((): string => {
     <ul>
       <MenuItem :link="songLink" text="Pieśń" icon="Note" />
       <MenuItem link="/songs" text="Przeglądaj" icon="List" />
-      <MenuItem link="/playlists" text="Playlisty" icon="FolderMusic" />
+      <MenuItem link="/playlists" text="Playlisty" icon="FolderMusic" active-match-path="\/playlist(?:s|\/[0-9]+)?$" />
       <MenuItem link="/options" text="Opcje" icon="DotsThreeHorizontal" />
     </ul>
   </nav>

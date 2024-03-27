@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router';
+import { computed } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
 import EntypoIcon from '../elements/EntypoIcon.vue';
 
-defineProps({
+const route = useRoute();
+
+const props = defineProps({
   link: {
     type: String,
     required: true
@@ -14,13 +17,30 @@ defineProps({
   text: {
     type: String,
     required: true
+  },
+  activeMatchPath: {
+    type: String
   }
 });
+
+const routerLinkClasses = computed(() => {
+  const classes: string[] = [];
+
+  if (props.activeMatchPath) {
+    const regexp = new RegExp(props.activeMatchPath);
+    if (regexp.test(route.path)) {
+      classes.push('active');
+    }
+  }
+
+  return classes;
+});
+
 </script>
 
 <template>
   <li>
-    <RouterLink :to="link" active-class="active">
+    <RouterLink :to="link" active-class="active" :class="routerLinkClasses">
       <EntypoIcon :name="icon" />
       <span>{{ text }}</span>
     </RouterLink>
