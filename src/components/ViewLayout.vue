@@ -85,7 +85,7 @@ const contentClass = computed((): string[] => {
     height: 3rem;
     border-radius: 0;
     border: 0;
-    border-left: 1px dashed var(--separator-color);
+    border-left: 1px solid var(--separator-color);
     padding: 0.5rem;
     background: transparent;
 
@@ -104,6 +104,7 @@ const contentClass = computed((): string[] => {
   #toolbar {
     & > button {
       width: 3rem;
+      border-left: none;
 
       & > svg {
         margin: 0;
