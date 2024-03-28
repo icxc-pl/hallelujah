@@ -80,14 +80,39 @@ const contentClass = computed((): string[] => {
     flex-shrink: 1;
   }
 
-  .icon-button {
+  & > button {
     margin: 0;
-    width: 3rem;
     height: 3rem;
+    border-radius: 0;
+    border: 0;
+    border-left: 1px dashed var(--separator-color);
+    padding: 0.5rem;
+    background: transparent;
+
+    & > svg {
+      width: 2rem;
+      height: 2rem;
+    }
   }
 
   form.search-input {
     flex-basis: 100%;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #toolbar {
+    & > button {
+      width: 3rem;
+
+      & > svg {
+        margin: 0;
+      }
+
+      & > span {
+        display: none;
+      }
+    }
   }
 }
 

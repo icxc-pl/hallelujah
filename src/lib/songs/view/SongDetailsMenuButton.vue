@@ -2,7 +2,7 @@
 import { type PropType } from 'vue';
 import { useModal } from 'vue-final-modal';
 
-import IconButton from '@/components/elements/IconButton.vue';
+import BasicButton from '@/components/elements/BasicButton.vue';
 import MenuModal from '@/components/modals/MenuModal.vue';
 import SelectModal from '@/components/modals/SelectModal.vue';
 
@@ -105,7 +105,7 @@ async function onSubmitChoosePlaylist(id: string) {
 </script>
 
 <template>
-  <IconButton title="Opcje" icon="Menu" @click="openOptionsModal.open" />
+  <BasicButton title="Podmenu" icon="Menu" @click="openOptionsModal.open" />
 </template>
 
 <style lang="less">

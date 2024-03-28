@@ -97,7 +97,7 @@ async function onConfirmRemove() {
     <RouterLink :to="link">
       <strong>{{ song.title }}</strong>
     </RouterLink>
-    <IconButton title="Opcje" icon="Menu" @click.stop="openOptionsModal.open" />
+    <IconButton title="Podmenu" icon="Menu" @click.stop="openOptionsModal.open" />
   </li>
 </template>
 

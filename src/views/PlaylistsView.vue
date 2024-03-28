@@ -10,7 +10,7 @@ import { DataContainer } from '@/lib/vue/DataContainer';
 
 import ViewLayout from '@/components/ViewLayout.vue';
 import PromptModal from '@/components/modals/PromptModal.vue';
-import IconButton from '@/components/elements/IconButton.vue';
+import BasicButton from '@/components/elements/BasicButton.vue';
 import InfoScreen from '@/components/elements/InfoScreen.vue';
 
 const container: DataContainer = reactive(new DataContainer());
@@ -86,7 +86,7 @@ refresh();
     :loading-state="container.loading">
 
     <template #toolbar>
-      <IconButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="createPlaylistModal.open" />
+      <BasicButton title="Dodaj nową Playlistę" icon="Plus" color="green" @click="createPlaylistModal.open" />
     </template>
 
     <template #content>
