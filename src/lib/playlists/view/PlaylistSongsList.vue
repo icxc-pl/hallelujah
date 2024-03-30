@@ -14,6 +14,10 @@ defineProps({
   songs: {
     type: Array as PropType<IPlaylistSong[]>,
     required: true
+  },
+  allowRemove: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -32,6 +36,7 @@ function whenSongRemoved(song: IPlaylistSong) {
       :key="song.hash"
       :playlist="playlist"
       :song="song"
+      :allow-remove="allowRemove"
       @removed="whenSongRemoved" />
   </ul>
 </template>

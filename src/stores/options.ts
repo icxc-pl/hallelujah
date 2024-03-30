@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
+import { } from 'pinia-plugin-persistedstate';
 
 export const useOptionsStore = defineStore('options', {
   state: () => {
@@ -13,11 +14,6 @@ export const useOptionsStore = defineStore('options', {
   },
   
   persist: {
-    enabled: true,
-    strategies: [
-      {
-        storage: localStorage
-      }
-    ]
+    storage: localStorage
   }
 });

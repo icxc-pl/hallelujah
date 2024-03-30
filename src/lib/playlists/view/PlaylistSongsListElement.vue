@@ -21,6 +21,10 @@ const props = defineProps({
   song: {
     type: Object as PropType<IPlaylistSong>,
     required: true
+  },
+  allowRemove: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -97,7 +101,10 @@ async function onConfirmRemove() {
     <RouterLink :to="link">
       <strong>{{ song.title }}</strong>
     </RouterLink>
-    <IconButton title="Podmenu" icon="Menu" @click.stop="openOptionsModal.open" />
+    <IconButton v-if="allowRemove"
+      title="Podmenu"
+      icon="Menu"
+      @click.stop="openOptionsModal.open" />
   </li>
 </template>
 
@@ -108,6 +115,8 @@ li.playlist-songs-list-element.songs-list-element {
   a {
     flex-grow: 1;
     flex-shrink: 1;
+    margin: 0;
+    padding: var(--side-margin-h) var(--side-margin-v);
   }
 
   button {
