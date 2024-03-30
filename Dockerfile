@@ -1,4 +1,4 @@
-FROM node:18-bookworm-slim AS builder
+FROM node:lts-alpine3.18 AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN npm run build
 
 # --- --- --- --- --- --- #
 
-FROM nginx:mainline-bookworm
+FROM nginx:alpine3.18
 
 ARG htmldir=/usr/share/nginx/html
 
